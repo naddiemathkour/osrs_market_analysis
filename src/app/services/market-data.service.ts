@@ -12,7 +12,7 @@ export class MarketDataService {
     'User-Agent': 'Runescape Market Data Analysis'
   });
 
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
 
   fetchMarketData(): Observable<ILatestData[]> {
     const url = `${environment.apiUrl}latest`;
