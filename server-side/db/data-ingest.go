@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -21,6 +22,19 @@ type MapObject struct {
 	Buylimit interface{} `json:"limit"`
 	Icon     interface{} `json:"icon"`
 	Examine  interface{} `json:"examine"`
+}
+
+// Create item price and data structs
+type ItemData struct {
+	AvgHighPrice    int `json:"avgHighPrice"`
+	AvgLowPrice     int `json:"avgLowPrice"`
+	HighPriceVolume int `json:"highPriceVolume"`
+	LowPriceVolume  int `json:"lowPriceVolume"`
+}
+
+type Item struct {
+	ID   string   `json:"id"`
+	Data ItemData `json:"data"`
 }
 
 func MapItems(db *sqlx.DB) {
@@ -104,39 +118,46 @@ func MapPrices(db *sqlx.DB) {
 	}
 
 	//Decode response data to JSON
-	var jsonResp map[string]interface{}
+	var data map[string]interface{}
 
-	err = json.Unmarshal(body, &jsonResp)
+	err = json.Unmarshal(body, &data)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(jsonResp)
+	jsonResp, err := json.Marshal(data["data"])
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// for _, item := range jsonResp {
-	// 	// Gather required data for insertion
-	// 	tempObj := MapObject{
-	// 		ID:       item["id"],
-	// 		Name:     item["name"],
-	// 		Members:  item["members"],
-	// 		Highalch: item["highalch"],
-	// 		Lowalch:  item["lowalch"],
-	// 		Value:    item["value"],
-	// 		Buylimit: item["limit"],
-	// 		Icon:     item["icon"],
-	// 		Examine:  item["examine"],
-	// 	}
+	// Unmarshal data into item map struct map[string]ItemData
+	var itemsMap map[string]ItemData
+	err = json.Unmarshal(jsonResp, &itemsMap)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// 	// Execute INSERT statement using sqlx.Named
-	// 	insertQuery := `INSERT INTO mapping (id, members, lowalch, highalch, buylimit, value, icon, name, examine)
-	//                 	VALUES (:id, :members, :lowalch, :highalch, :buylimit, :value, :icon, :name, :examine)`
+	// Convert map into slice of Items
+	var items []Item
+	for id, data := range itemsMap {
+		items = append(items, Item{
+			ID:   id,
+			Data: data,
+		})
+	}
 
-	// 	fmt.Println("Inserting: ", tempObj)
+	// Set timestamp for ingestion
+	var timestamp = time.Now().Format("2006-01-02 15:04:05")
 
-	// 	_, err := db.NamedExec(insertQuery, &tempObj)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
+	// Iterate through items and insert into database
+	for _, item := range items {
+		insertQuery := `INSERT INTO price (id, timestamp, avgHighPrice, highPriceVolume, avgLowPrice, lowPriceVolume) 
+						VALUES ($1, $2, $3, $4, $5, $6)
+						ON CONFLICT (id, timestamp) DO NOTHING;`
 
-	// }
+		_, err := db.Exec(insertQuery, item.ID, timestamp, item.Data.AvgHighPrice, item.Data.HighPriceVolume, item.Data.AvgLowPrice, item.Data.LowPriceVolume)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
