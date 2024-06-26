@@ -18,7 +18,7 @@ type MapObject struct {
 	Highalch interface{} `json:"highalch"`
 	Lowalch  interface{} `json:"lowalch"`
 	Value    interface{} `json:"value"`
-	Limit    interface{} `json:"limit"`
+	Buylimit interface{} `json:"limit"`
 	Icon     interface{} `json:"icon"`
 	Examine  interface{} `json:"examine"`
 }
@@ -28,7 +28,6 @@ func MapItems(db *sqlx.DB) {
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/mapping", nil)
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 
 	req.Header.Set("User-Agent", "Runescape Market Data Analysis")
@@ -38,14 +37,12 @@ func MapItems(db *sqlx.DB) {
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 
 	//Decode response data to JSON
@@ -57,6 +54,7 @@ func MapItems(db *sqlx.DB) {
 	}
 
 	for _, item := range jsonResp {
+		// Gather required data for insertion
 		tempObj := MapObject{
 			ID:       item["id"],
 			Name:     item["name"],
@@ -64,11 +62,81 @@ func MapItems(db *sqlx.DB) {
 			Highalch: item["highalch"],
 			Lowalch:  item["lowalch"],
 			Value:    item["value"],
-			Limit:    item["limit"],
+			Buylimit: item["limit"],
 			Icon:     item["icon"],
 			Examine:  item["examine"],
 		}
-		fmt.Println(tempObj)
-		fmt.Println(db.Ping())
+
+		// Execute INSERT statement using sqlx.Named
+		insertQuery := `INSERT INTO mapping (id, members, lowalch, highalch, buylimit, value, icon, name, examine)
+                    	VALUES (:id, :members, :lowalch, :highalch, :buylimit, :value, :icon, :name, :examine)`
+
+		fmt.Println("Inserting: ", tempObj)
+
+		_, err := db.NamedExec(insertQuery, &tempObj)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 	}
+}
+
+func MapPrices(db *sqlx.DB) {
+	//handle http request
+	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/5m", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	req.Header.Set("User-Agent", "Runescape Market Data Analysis")
+
+	client := &http.Client{}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//Decode response data to JSON
+	var jsonResp map[string]interface{}
+
+	err = json.Unmarshal(body, &jsonResp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(jsonResp)
+
+	// for _, item := range jsonResp {
+	// 	// Gather required data for insertion
+	// 	tempObj := MapObject{
+	// 		ID:       item["id"],
+	// 		Name:     item["name"],
+	// 		Members:  item["members"],
+	// 		Highalch: item["highalch"],
+	// 		Lowalch:  item["lowalch"],
+	// 		Value:    item["value"],
+	// 		Buylimit: item["limit"],
+	// 		Icon:     item["icon"],
+	// 		Examine:  item["examine"],
+	// 	}
+
+	// 	// Execute INSERT statement using sqlx.Named
+	// 	insertQuery := `INSERT INTO mapping (id, members, lowalch, highalch, buylimit, value, icon, name, examine)
+	//                 	VALUES (:id, :members, :lowalch, :highalch, :buylimit, :value, :icon, :name, :examine)`
+
+	// 	fmt.Println("Inserting: ", tempObj)
+
+	// 	_, err := db.NamedExec(insertQuery, &tempObj)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+
+	// }
 }

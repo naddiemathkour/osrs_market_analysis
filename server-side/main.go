@@ -16,6 +16,7 @@ type EnvVars struct {
 	dbname   string
 	user     string
 	password string
+	path     string
 }
 
 func main() {
@@ -30,6 +31,7 @@ func main() {
 		dbname:   env.Get("dbname", ""),
 		user:     env.Get("user", ""),
 		password: env.Get("password", ""),
+		path:     env.Get("path", ""),
 	}
 
 	//connect to PostgreSQL database
@@ -41,6 +43,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	db.Exec(fmt.Sprintf("set search_path=%s", dbConfig.path))
+
 	defer db.Close()
 
 	//test connection to database
@@ -50,5 +54,6 @@ func main() {
 		log.Println("Successfully Connected")
 	}
 
-	database.MapItems(db)
+	// database.MapItems(db)
+	database.MapPrices(db)
 }
