@@ -155,6 +155,8 @@ func MapPrices(db *sqlx.DB) {
 						VALUES ($1, $2, $3, $4, $5, $6)
 						ON CONFLICT (id, timestamp) DO NOTHING;`
 
+		fmt.Println(insertQuery)
+
 		_, err := db.Exec(insertQuery, item.ID, timestamp, item.Data.AvgHighPrice, item.Data.HighPriceVolume, item.Data.AvgLowPrice, item.Data.LowPriceVolume)
 		if err != nil {
 			log.Fatal(err)
