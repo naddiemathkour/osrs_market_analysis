@@ -7,7 +7,7 @@ import (
 	"github.com/gofor-little/env"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	database "github.com/naddiemathkour/osrs_market_analysis/db"
+	ingest "github.com/naddiemathkour/osrs_market_analysis/db"
 )
 
 type EnvVars struct {
@@ -54,6 +54,6 @@ func main() {
 		log.Println("Successfully Connected")
 	}
 
-	// database.MapItems(db)
-	database.MapPrices(db)
+	ingest.MapItems(db)
+	ingest.MapPrices(db)
 }

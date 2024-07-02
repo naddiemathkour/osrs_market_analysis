@@ -1,4 +1,4 @@
-package database
+package ingest
 
 import (
 	"encoding/json"
@@ -67,6 +67,19 @@ func MapItems(db *sqlx.DB) {
 		log.Fatal(err)
 	}
 
+	// Query database for item count. If item count is still the same, return. Else, update all item data.
+	countQuery := `SELECT COUNT(*) OUTPUT FROM mapping`
+	var count int
+	err = db.QueryRow(countQuery).Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(jsonResp) == count {
+		return
+	}
+
+	// Upsert all item data
 	for _, item := range jsonResp {
 		// Gather required data for insertion
 		tempObj := MapObject{
@@ -81,9 +94,19 @@ func MapItems(db *sqlx.DB) {
 			Examine:  item["examine"],
 		}
 
-		// Execute INSERT statement using sqlx.Named
+		// Create and Execute INSERT statement
 		insertQuery := `INSERT INTO mapping (id, members, lowalch, highalch, buylimit, value, icon, name, examine)
-                    	VALUES (:id, :members, :lowalch, :highalch, :buylimit, :value, :icon, :name, :examine)`
+                    	VALUES (:id, :members, :lowalch, :highalch, :buylimit, :value, :icon, :name, :examine)
+						ON CONFLICT (id)
+						DO UPDATE SET
+							members 	= EXCLUDED.members,
+							lowalch 	= EXCLUDED.lowalch,
+							highalch 	= EXCLUDED.highalch,
+							buylimit 	= EXCLUDED.buylimit,
+							value 		= EXCLUDED.value,
+							icon 		= EXCLUDED.icon,
+							name 		= EXCLUDED.name,
+							examine 	= EXCLUDED.examine;`
 
 		fmt.Println("Inserting: ", tempObj)
 
@@ -151,15 +174,15 @@ func MapPrices(db *sqlx.DB) {
 
 	// Iterate through items and insert into database
 	for _, item := range items {
-		insertQuery := `INSERT INTO price (id, timestamp, avgHighPrice, highPriceVolume, avgLowPrice, lowPriceVolume) 
+		insertQuery := `INSERT INTO price (id, timestamp, avgHighPrice, highPriceVolume, avgLowPrice, lowPriceVolume)
 						VALUES ($1, $2, $3, $4, $5, $6)
 						ON CONFLICT (id, timestamp) DO NOTHING;`
-
-		fmt.Println(insertQuery)
 
 		_, err := db.Exec(insertQuery, item.ID, timestamp, item.Data.AvgHighPrice, item.Data.HighPriceVolume, item.Data.AvgLowPrice, item.Data.LowPriceVolume)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
+
+	log.Println("Successfully inserted data")
 }
