@@ -41,3 +41,240 @@
 {"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:00:00-04:00"}
 {"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:00:01-04:00"}
 {"duration":1.020430966,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:00:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:05:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:05:00-04:00"}
+{"level":"info","msg":"Cron schedular started","time":"2024-07-02T12:08:32-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:10:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:10:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:10:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:10:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:10:01-04:00"}
+{"duration":1.244757182,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:10:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:15:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:15:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:15:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:15:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:15:01-04:00"}
+{"duration":1.078892021,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:15:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:20:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:20:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:20:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:20:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:20:01-04:00"}
+{"duration":1.122718386,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:20:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:25:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:25:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:25:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:25:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:25:01-04:00"}
+{"duration":1.1229162,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:25:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:30:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:30:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:30:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:30:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:30:01-04:00"}
+{"duration":1.181218815,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:30:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:35:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:35:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:35:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:35:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:35:01-04:00"}
+{"duration":1.113784932,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:35:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:40:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:40:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:40:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:40:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:40:01-04:00"}
+{"duration":1.07621095,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:40:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:45:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:45:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:45:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:45:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:45:01-04:00"}
+{"duration":1.112822436,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:45:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:50:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:50:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:50:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:50:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:50:01-04:00"}
+{"duration":1.158879052,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:50:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T12:55:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T12:55:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T12:55:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T12:55:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T12:55:01-04:00"}
+{"duration":1.12797069,"level":"info","msg":"Cron function completed.","time":"2024-07-02T12:55:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:00:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:00:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:00:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:00:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:00:01-04:00"}
+{"duration":1.156318328,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:00:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:05:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:05:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:05:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:05:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:05:01-04:00"}
+{"duration":1.112577988,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:05:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:10:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:10:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:10:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:10:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:10:01-04:00"}
+{"duration":1.163717944,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:10:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:15:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:15:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:15:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:15:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:15:01-04:00"}
+{"duration":1.030967467,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:15:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:20:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:20:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:20:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:20:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:20:01-04:00"}
+{"duration":1.044297572,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:20:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:25:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:25:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:25:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:25:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:25:01-04:00"}
+{"duration":1.085995718,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:25:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:30:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:30:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:30:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:30:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:30:01-04:00"}
+{"duration":1.152575768,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:30:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:35:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:35:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:35:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:35:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:35:01-04:00"}
+{"duration":1.082769519,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:35:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:40:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:40:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:40:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:40:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:40:01-04:00"}
+{"duration":1.279352515,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:40:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:45:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:45:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:45:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:45:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:45:01-04:00"}
+{"duration":1.209411602,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:45:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:50:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:50:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:50:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:50:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:50:01-04:00"}
+{"duration":1.124518419,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:50:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T13:55:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T13:55:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T13:55:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T13:55:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T13:55:01-04:00"}
+{"duration":1.172385454,"level":"info","msg":"Cron function completed.","time":"2024-07-02T13:55:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:00:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:00:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:00:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:00:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T14:00:01-04:00"}
+{"duration":1.094263172,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:00:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:05:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:05:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:05:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:05:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T14:05:00-04:00"}
+{"duration":0.996091161,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:05:00-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:10:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:10:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:10:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:10:00-04:00"}
+{"level":"info","msg":"Successfully inserted item price data.","time":"2024-07-02T14:10:01-04:00"}
+{"duration":1.261514442,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:10:01-04:00"}
+{"level":"info","msg":"Shutting down scheduler...","time":"2024-07-02T14:13:39-04:00"}
+{"level":"info","msg":"Scheduler shut down gracefully.","time":"2024-07-02T14:13:39-04:00"}
+{"level":"info","msg":"Cron schedular started","time":"2024-07-02T14:13:45-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:15:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:15:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:15:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:15:00-04:00"}
+{"level":"info","msg":"Successfully inserted 146100 items price data.","time":"2024-07-02T14:15:01-04:00"}
+{"duration":1.211679496,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:15:01-04:00"}
+{"level":"info","msg":"Shutting down scheduler...","time":"2024-07-02T14:17:13-04:00"}
+{"level":"info","msg":"Scheduler shut down gracefully.","time":"2024-07-02T14:17:13-04:00"}
+{"level":"info","msg":"Cron schedular started","time":"2024-07-02T14:17:17-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:20:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:20:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:20:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:20:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1668 items price data.","time":"2024-07-02T14:20:01-04:00"}
+{"duration":1.171479911,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:20:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:25:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:25:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:25:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:25:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1681 items price data.","time":"2024-07-02T14:25:01-04:00"}
+{"duration":1.16209004,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:25:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:30:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:30:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:30:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:30:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1711 items price data.","time":"2024-07-02T14:30:01-04:00"}
+{"duration":1.187660978,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:30:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:35:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:35:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:35:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:35:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1710 items price data.","time":"2024-07-02T14:35:01-04:00"}
+{"duration":1.241544866,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:35:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:40:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:40:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:40:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:40:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1748 items price data.","time":"2024-07-02T14:40:01-04:00"}
+{"duration":1.114360399,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:40:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:45:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:45:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:45:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:45:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1674 items price data.","time":"2024-07-02T14:45:01-04:00"}
+{"duration":1.22254498,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:45:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:50:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:50:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:50:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:50:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1716 items price data.","time":"2024-07-02T14:50:01-04:00"}
+{"duration":1.170722148,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:50:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T14:55:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T14:55:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T14:55:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T14:55:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1684 items price data.","time":"2024-07-02T14:55:01-04:00"}
+{"duration":1.138027294,"level":"info","msg":"Cron function completed.","time":"2024-07-02T14:55:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T15:00:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T15:00:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T15:00:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T15:00:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1659 items price data.","time":"2024-07-02T15:00:01-04:00"}
+{"duration":1.286394729,"level":"info","msg":"Cron function completed.","time":"2024-07-02T15:00:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T15:05:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T15:05:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T15:05:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T15:05:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1714 items price data.","time":"2024-07-02T15:05:01-04:00"}
+{"duration":1.137381788,"level":"info","msg":"Cron function completed.","time":"2024-07-02T15:05:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T15:10:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T15:10:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T15:10:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T15:10:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1728 items price data.","time":"2024-07-02T15:10:01-04:00"}
+{"duration":1.068276062,"level":"info","msg":"Cron function completed.","time":"2024-07-02T15:10:01-04:00"}
+{"level":"info","msg":"CRON FUNCTION START","time":"2024-07-02T15:15:00-04:00"}
+{"level":"info","msg":"Connecting to Database...","time":"2024-07-02T15:15:00-04:00"}
+{"level":"info","msg":"Successfully Connected.","time":"2024-07-02T15:15:00-04:00"}
+{"level":"info","msg":"Ingesting item price data...","time":"2024-07-02T15:15:00-04:00"}
+{"level":"info","msg":"Successfully inserted 1771 items price data.","time":"2024-07-02T15:15:01-04:00"}
+{"duration":1.345953685,"level":"info","msg":"Cron function completed.","time":"2024-07-02T15:15:01-04:00"}

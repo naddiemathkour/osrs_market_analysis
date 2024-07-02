@@ -44,5 +44,4 @@ func main() {
 	logging.Logger.Info("Shutting down scheduler...")
 	c.Stop()
 	logging.Logger.Info("Scheduler shut down gracefully.")
-
 }

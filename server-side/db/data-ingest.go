@@ -119,7 +119,7 @@ func MapItems(db *sqlx.DB) {
 	var count int
 	err = db.QueryRow(countQuery).Scan(&count)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Error querying row count: %v", err)
 	}
 
 	if len(jsonResp) == count {
@@ -127,7 +127,7 @@ func MapItems(db *sqlx.DB) {
 	}
 
 	// Log when attempting to add items
-	logging.Logger.Info("Adding item updates to Database...")
+	logging.Logger.Infof("Adding %d item(s) to Database...", len(jsonResp)-count)
 
 	// Upsert all item data
 	for _, item := range jsonResp {
@@ -225,6 +225,7 @@ func MapPrices(db *sqlx.DB) {
 	var timestamp = time.Now().Format("2006-01-02 15:04:05")
 
 	// Iterate through items and insert into database
+	count := 0
 	for _, item := range items {
 		insertQuery := `INSERT INTO price (id, timestamp, avgHighPrice, highPriceVolume, avgLowPrice, lowPriceVolume)
 						VALUES ($1, $2, $3, $4, $5, $6)
@@ -233,8 +234,10 @@ func MapPrices(db *sqlx.DB) {
 		_, err := db.Exec(insertQuery, item.ID, timestamp, item.Data.AvgHighPrice, item.Data.HighPriceVolume, item.Data.AvgLowPrice, item.Data.LowPriceVolume)
 		if err != nil {
 			logging.Logger.Fatal(err)
+		} else {
+			count++
 		}
 	}
 
-	logging.Logger.Info("Successfully inserted item price data.")
+	logging.Logger.Infof("Successfully inserted %d items price data.", count)
 }
