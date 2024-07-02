@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"time"
 
+	"github.com/gofor-little/env"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
+	"github.com/naddiemathkour/osrs_market_analysis/logging"
 )
 
 // Create mapping object struct with exported fields and JSON tags
@@ -37,11 +39,56 @@ type Item struct {
 	Data ItemData `json:"data"`
 }
 
+// Create environment variable struct
+type EnvVars struct {
+	host     string
+	port     string
+	dbname   string
+	user     string
+	password string
+	path     string
+}
+
+func Connect() {
+	// Log when function begins running
+	logging.Logger.Info("Connecting to Database...")
+
+	//load env file from directory
+	if err := env.Load("./.env"); err != nil {
+		logging.Logger.Fatalf("Failed to load environment file: %v", err)
+	}
+
+	dbConfig := EnvVars{
+		host:     env.Get("host", ""),
+		port:     env.Get("port", ""),
+		dbname:   env.Get("dbname", ""),
+		user:     env.Get("user", ""),
+		password: env.Get("password", ""),
+		path:     env.Get("path", ""),
+	}
+
+	//connect to PostgreSQL database
+	db, err := sqlx.Connect("postgres", fmt.Sprintf(
+		"user=%s dbname=%s sslmode=%s password=%s host=%s port=%s search_path=%s",
+		dbConfig.user, dbConfig.dbname, "disable", dbConfig.password, dbConfig.host, dbConfig.port, dbConfig.path,
+	))
+	if err != nil {
+		logging.Logger.Fatalf("Failed to connect to Postgres: %v", err)
+	} else {
+		logging.Logger.Info("Successfully Connected.")
+	}
+
+	defer db.Close()
+
+	MapItems(db)
+	MapPrices(db)
+}
+
 func MapItems(db *sqlx.DB) {
 	//handle http request
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/mapping", nil)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	req.Header.Set("User-Agent", "Runescape Market Data Analysis")
@@ -50,13 +97,13 @@ func MapItems(db *sqlx.DB) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	//Decode response data to JSON
@@ -64,7 +111,7 @@ func MapItems(db *sqlx.DB) {
 
 	err = json.Unmarshal(body, &jsonResp)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	// Query database for item count. If item count is still the same, return. Else, update all item data.
@@ -72,12 +119,15 @@ func MapItems(db *sqlx.DB) {
 	var count int
 	err = db.QueryRow(countQuery).Scan(&count)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	if len(jsonResp) == count {
 		return
 	}
+
+	// Log when attempting to add items
+	logging.Logger.Info("Adding item updates to Database...")
 
 	// Upsert all item data
 	for _, item := range jsonResp {
@@ -108,21 +158,23 @@ func MapItems(db *sqlx.DB) {
 							name 		= EXCLUDED.name,
 							examine 	= EXCLUDED.examine;`
 
-		fmt.Println("Inserting: ", tempObj)
-
 		_, err := db.NamedExec(insertQuery, &tempObj)
 		if err != nil {
-			log.Fatal(err)
+			logging.Logger.Fatal(err)
 		}
-
 	}
+
+	logging.Logger.Info("Successfully added item updates.")
 }
 
 func MapPrices(db *sqlx.DB) {
+	// Log operation
+	logging.Logger.Info("Ingesting item price data...")
+
 	//handle http request
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/5m", nil)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	req.Header.Set("User-Agent", "Runescape Market Data Analysis")
@@ -131,13 +183,13 @@ func MapPrices(db *sqlx.DB) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	//Decode response data to JSON
@@ -145,19 +197,19 @@ func MapPrices(db *sqlx.DB) {
 
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	jsonResp, err := json.Marshal(data["data"])
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	// Unmarshal data into item map struct map[string]ItemData
 	var itemsMap map[string]ItemData
 	err = json.Unmarshal(jsonResp, &itemsMap)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatal(err)
 	}
 
 	// Convert map into slice of Items
@@ -180,9 +232,9 @@ func MapPrices(db *sqlx.DB) {
 
 		_, err := db.Exec(insertQuery, item.ID, timestamp, item.Data.AvgHighPrice, item.Data.HighPriceVolume, item.Data.AvgLowPrice, item.Data.LowPriceVolume)
 		if err != nil {
-			log.Fatal(err)
+			logging.Logger.Fatal(err)
 		}
 	}
 
-	log.Println("Successfully inserted data")
+	logging.Logger.Info("Successfully inserted item price data.")
 }

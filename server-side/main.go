@@ -1,59 +1,48 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
-	"github.com/gofor-little/env"
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
 	ingest "github.com/naddiemathkour/osrs_market_analysis/db"
+	"github.com/naddiemathkour/osrs_market_analysis/logging"
+	"github.com/robfig/cron/v3"
+	"github.com/sirupsen/logrus"
 )
 
-type EnvVars struct {
-	host     string
-	port     string
-	dbname   string
-	user     string
-	password string
-	path     string
-}
-
 func main() {
-	//load env file from directory
-	if err := env.Load("./.env"); err != nil {
-		log.Fatal(err)
-	}
+	// Create cron job schedular
+	c := cron.New()
 
-	dbConfig := EnvVars{
-		host:     env.Get("host", ""),
-		port:     env.Get("port", ""),
-		dbname:   env.Get("dbname", ""),
-		user:     env.Get("user", ""),
-		password: env.Get("password", ""),
-		path:     env.Get("path", ""),
-	}
-
-	//connect to PostgreSQL database
-	db, err := sqlx.Connect("postgres", fmt.Sprintf(
-		"user=%s dbname=%s sslmode=%s password=%s host=%s port=%s",
-		dbConfig.user, dbConfig.dbname, "disable", dbConfig.password, dbConfig.host, dbConfig.port,
-	))
+	// Add function to be run every 5 minutes
+	_, err := c.AddFunc("*/5 * * * *", func() {
+		logging.Logger.Info("CRON FUNCTION START")
+		start := time.Now()
+		ingest.Connect()
+		logging.Logger.WithFields(logrus.Fields{
+			"duration": time.Since(start).Seconds(),
+		}).Info("Cron function completed.")
+	})
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatalf("Error scheduling task: %v", err)
 	}
 
-	db.Exec(fmt.Sprintf("set search_path=%s", dbConfig.path))
+	// Start the cron scheduler
+	c.Start()
+	logging.Logger.Info("Cron schedular started")
 
-	defer db.Close()
+	// Set up signal handling for graceful shut down
+	s := make(chan os.Signal, 1)
+	signal.Notify(s, syscall.SIGINT, syscall.SIGTERM)
 
-	//test connection to database
-	if err := db.Ping(); err != nil {
-		log.Fatal(err)
-	} else {
-		log.Println("Successfully Connected")
-	}
+	// Block until a signal is recieved
+	<-s
 
-	ingest.MapItems(db)
-	ingest.MapPrices(db)
+	// Handle shutdown
+	logging.Logger.Info("Shutting down scheduler...")
+	c.Stop()
+	logging.Logger.Info("Scheduler shut down gracefully.")
+
 }
