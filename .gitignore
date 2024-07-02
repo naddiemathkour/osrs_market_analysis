@@ -42,5 +42,5 @@ testem.log
 Thumbs.db
 
 # Manually Added
-*.env
-*.log
+.env
+scheduler.log
