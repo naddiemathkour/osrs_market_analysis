@@ -44,10 +44,14 @@ func main() {
 }
 
 func startServer() *http.Server {
+	// Create routing mux
+	mux := http.NewServeMux()
+	mux.HandleFunc("/api/data", corsMiddleware(db.DataFetchHandler))
+
 	// Initialize Server
 	srv := &http.Server{
 		Addr:    ":8080",
-		Handler: http.HandlerFunc(db.DataFetchHandler),
+		Handler: mux,
 	}
 
 	// Create go routine to start server
@@ -59,6 +63,24 @@ func startServer() *http.Server {
 
 	logging.Logger.Info("HTTP server started on :8080")
 	return srv
+}
+
+func corsMiddleware(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Set CORS headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		// If this is a preflight request, send status ok
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Call the next handler injected in the original corsMiddleware() function call
+		next.ServeHTTP(w, r)
+	}
 }
 
 func startCronJob() *cron.Cron {
@@ -81,6 +103,5 @@ func startCronJob() *cron.Cron {
 	// Start the cron scheduler
 	c.Start()
 	logging.Logger.Info("Cron schedular started")
-
 	return c
 }
