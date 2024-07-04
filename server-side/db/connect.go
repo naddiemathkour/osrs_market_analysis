@@ -18,7 +18,7 @@ type EnvVars struct {
 	path     string
 }
 
-func Connect() {
+func Connect(method string) *sqlx.DB {
 	// Log when function begins running
 	logging.Logger.Info("Connecting to Database...")
 
@@ -49,6 +49,12 @@ func Connect() {
 
 	defer db.Close()
 
-	MapItems(db)
-	MapPrices(db)
+	if method == "POST" {
+		MapItems(db)
+		MapPrices(db)
+	} else if method == "GET" {
+		return db
+	}
+
+	return nil
 }
