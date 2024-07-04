@@ -1,4 +1,4 @@
-package ingest
+package db
 
 import (
 	"encoding/json"
