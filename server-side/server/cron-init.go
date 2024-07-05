@@ -17,7 +17,7 @@ func StartCronJob() *cron.Cron {
 	_, err := c.AddFunc("*/5 * * * *", func() {
 		logging.Logger.Info("CRON FUNCTION START")
 		start := time.Now()
-		db.Connect("GET")
+		db.Connect("POST")
 		logging.Logger.WithFields(logrus.Fields{
 			"duration": time.Since(start).Seconds(),
 		}).Info("Cron function completed.")

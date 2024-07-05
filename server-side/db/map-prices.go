@@ -9,20 +9,8 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/naddiemathkour/osrs_market_analysis/logging"
+	models "github.com/naddiemathkour/osrs_market_analysis/models"
 )
-
-// Create item price and data structs
-type ItemData struct {
-	AvgHighPrice    int `json:"avgHighPrice"`
-	AvgLowPrice     int `json:"avgLowPrice"`
-	HighPriceVolume int `json:"highPriceVolume"`
-	LowPriceVolume  int `json:"lowPriceVolume"`
-}
-
-type Item struct {
-	ID   string   `json:"id"`
-	Data ItemData `json:"data"`
-}
 
 func MapPrices(db *sqlx.DB) {
 	// Log operation
@@ -31,7 +19,7 @@ func MapPrices(db *sqlx.DB) {
 	//handle http request
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/5m", nil)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to create http request: %v", err)
 	}
 
 	req.Header.Set("User-Agent", "Runescape Market Data Analysis")
@@ -40,13 +28,13 @@ func MapPrices(db *sqlx.DB) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to accept request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to read response body: %v", err)
 	}
 
 	//Decode response data to JSON
@@ -54,25 +42,25 @@ func MapPrices(db *sqlx.DB) {
 
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to unmarshal JSON data: %v", err)
 	}
 
 	jsonResp, err := json.Marshal(data["data"])
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to marshal data: %v", err)
 	}
 
-	// Unmarshal data into item map struct map[string]ItemData
-	var itemsMap map[string]ItemData
+	// Unmarshal data into item map struct map[string]models.ItemData
+	var itemsMap map[string]models.ItemData
 	err = json.Unmarshal(jsonResp, &itemsMap)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to unmarshal data: %v", err)
 	}
 
 	// Convert map into slice of Items
-	var items []Item
+	var items []models.ItemObject
 	for id, data := range itemsMap {
-		items = append(items, Item{
+		items = append(items, models.ItemObject{
 			ID:   id,
 			Data: data,
 		})
@@ -90,7 +78,7 @@ func MapPrices(db *sqlx.DB) {
 
 		_, err := db.Exec(insertQuery, item.ID, timestamp, item.Data.AvgHighPrice, item.Data.HighPriceVolume, item.Data.AvgLowPrice, item.Data.LowPriceVolume)
 		if err != nil {
-			logging.Logger.Fatal(err)
+			logging.Logger.Fatalf("Failed to execute insert query: %v", err)
 		} else {
 			count++
 		}

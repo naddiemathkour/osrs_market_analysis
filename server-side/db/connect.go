@@ -6,45 +6,31 @@ import (
 	"github.com/gofor-little/env"
 	"github.com/jmoiron/sqlx"
 	"github.com/naddiemathkour/osrs_market_analysis/logging"
+	"github.com/naddiemathkour/osrs_market_analysis/models"
 )
 
-// Create environment variable struct
-type EnvVars struct {
-	host     string
-	port     string
-	dbname   string
-	user     string
-	password string
-	path     string
-}
-
 func Connect(method string) *sqlx.DB {
-	// Log when function begins running
-	logging.Logger.Info("Connecting to Database...")
-
 	//load env file from directory
 	if err := env.Load("./.env"); err != nil {
 		logging.Logger.Fatalf("Failed to load environment file: %v", err)
 	}
 
-	dbConfig := EnvVars{
-		host:     env.Get("host", ""),
-		port:     env.Get("port", ""),
-		dbname:   env.Get("dbname", ""),
-		user:     env.Get("user", ""),
-		password: env.Get("password", ""),
-		path:     env.Get("path", ""),
+	dbConfig := models.EnvVars{
+		Host:     env.Get("host", ""),
+		Port:     env.Get("port", ""),
+		Dbname:   env.Get("dbname", ""),
+		User:     env.Get("user", ""),
+		Password: env.Get("password", ""),
+		Path:     env.Get("path", ""),
 	}
 
 	//connect to PostgreSQL database
 	db, err := sqlx.Connect("postgres", fmt.Sprintf(
 		"user=%s dbname=%s sslmode=%s password=%s host=%s port=%s search_path=%s",
-		dbConfig.user, dbConfig.dbname, "disable", dbConfig.password, dbConfig.host, dbConfig.port, dbConfig.path,
+		dbConfig.User, dbConfig.Dbname, "disable", dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Path,
 	))
 	if err != nil {
 		logging.Logger.Fatalf("Failed to connect to Postgres: %v", err)
-	} else {
-		logging.Logger.Info("Successfully Connected.")
 	}
 
 	defer db.Close()

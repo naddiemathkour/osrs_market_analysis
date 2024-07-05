@@ -6,5 +6,8 @@ import (
 )
 
 func DataFetchHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Printing from DataFetchHandler")
+	// Fetch DB connection object
+	db := Connect(r.Method)
+
+	fmt.Println(db)
 }

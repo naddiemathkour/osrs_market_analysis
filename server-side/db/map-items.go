@@ -8,25 +8,14 @@ import (
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/naddiemathkour/osrs_market_analysis/logging"
+	models "github.com/naddiemathkour/osrs_market_analysis/models"
 )
-
-type MapObject struct {
-	ID       interface{} `json:"id"`
-	Name     interface{} `json:"name"`
-	Members  interface{} `json:"members"`
-	Highalch interface{} `json:"highalch"`
-	Lowalch  interface{} `json:"lowalch"`
-	Value    interface{} `json:"value"`
-	Buylimit interface{} `json:"limit"`
-	Icon     interface{} `json:"icon"`
-	Examine  interface{} `json:"examine"`
-}
 
 func MapItems(db *sqlx.DB) {
 	//handle http request
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/mapping", nil)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to create http request: %v", err)
 	}
 
 	req.Header.Set("User-Agent", "Runescape Market Data Analysis")
@@ -35,13 +24,13 @@ func MapItems(db *sqlx.DB) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to accept request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to read response body: %v", err)
 	}
 
 	//Decode response data to JSON
@@ -49,7 +38,7 @@ func MapItems(db *sqlx.DB) {
 
 	err = json.Unmarshal(body, &jsonResp)
 	if err != nil {
-		logging.Logger.Fatal(err)
+		logging.Logger.Fatalf("Failed to unmarshal JSON data: %v", err)
 	}
 
 	// Query database for item count. If item count is still the same, return. Else, update all item data.
@@ -70,7 +59,7 @@ func MapItems(db *sqlx.DB) {
 	// Upsert all item data
 	for _, item := range jsonResp {
 		// Gather required data for insertion
-		tempObj := MapObject{
+		tempObj := models.Item{
 			ID:       item["id"],
 			Name:     item["name"],
 			Members:  item["members"],
@@ -98,7 +87,7 @@ func MapItems(db *sqlx.DB) {
 
 		_, err := db.NamedExec(insertQuery, &tempObj)
 		if err != nil {
-			logging.Logger.Fatal(err)
+			logging.Logger.Fatalf("Failed to execute insert query: %v", err)
 		}
 	}
 
