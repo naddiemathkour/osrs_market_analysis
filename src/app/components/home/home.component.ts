@@ -10,11 +10,13 @@ import { FetchmarketdataService } from '../../services/fetchmarketdata.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  test: string = '';
+
   constructor(private _fetchMarketData: FetchmarketdataService) {}
 
   fetch() {
     this._fetchMarketData
       .getMarketData()
-      .subscribe((data) => console.log(data));
+      .subscribe((data) => (this.test = data['message']));
   }
 }
