@@ -1,6 +1,6 @@
 module github.com/naddiemathkour/osrs_market_analysis
 
-go 1.18
+go 1.20
 
 require (
 	github.com/gofor-little/env v1.0.18
@@ -11,4 +11,4 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
-require golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+require golang.org/x/sys v0.22.0 // indirect

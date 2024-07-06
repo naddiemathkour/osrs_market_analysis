@@ -33,14 +33,10 @@ func Connect(method string) *sqlx.DB {
 		logging.Logger.Fatalf("Failed to connect to Postgres: %v", err)
 	}
 
-	defer db.Close()
-
-	if method == "POST" {
-		MapItems(db)
-		MapPrices(db)
-	} else if method == "GET" {
-		return db
+	// Verify the connection
+	if err := db.Ping(); err != nil {
+		logging.Logger.Errorf("Failed to ping database: %v", err)
 	}
 
-	return nil
+	return db
 }

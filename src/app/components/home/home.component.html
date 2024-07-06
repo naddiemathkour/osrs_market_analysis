@@ -1,2 +1,9 @@
-<h1>Hello</h1>
-<button (click)="fetch()">Test</button> {{ test }}
+<h1>RS Item List</h1>
+<button (click)="fetch()">Load Items</button>
+@for (item of spreads; track spreadData) {
+<div>
+  Name: {{ item.name }} | Spread: {{ item.spread }} | Buy Limit:
+  {{ item.buylimit }} | Profit: {{ item.margin }}%
+</div>
+<hr />
+}

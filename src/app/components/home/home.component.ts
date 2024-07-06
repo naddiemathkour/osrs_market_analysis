@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FetchmarketdataService } from '../../services/fetchmarketdata.service';
+import { map, Observable } from 'rxjs';
+import { IItemListings } from '../../interfaces/itemlistings.interface';
 
 @Component({
   selector: 'app-home',
@@ -10,13 +12,14 @@ import { FetchmarketdataService } from '../../services/fetchmarketdata.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  test: string = '';
+  spreadData: Observable<IItemListings[]> = [] as any;
+  spreads: IItemListings[] = [];
 
   constructor(private _fetchMarketData: FetchmarketdataService) {}
 
   fetch() {
     this._fetchMarketData
       .getMarketData()
-      .subscribe((data) => (this.test = data['message']));
+      .subscribe((data) => (this.spreads = data.items));
   }
 }

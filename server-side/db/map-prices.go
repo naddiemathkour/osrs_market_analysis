@@ -6,13 +6,16 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/naddiemathkour/osrs_market_analysis/logging"
 	models "github.com/naddiemathkour/osrs_market_analysis/models"
 )
 
-func MapPrices(db *sqlx.DB) {
+func MapPrices() {
+	// Get db connection
+	db := Connect("POST")
+	defer db.Close()
+
 	// Log operation
 	logging.Logger.Info("Ingesting item price data...")
 
@@ -84,5 +87,5 @@ func MapPrices(db *sqlx.DB) {
 		}
 	}
 
-	logging.Logger.Infof("Successfully inserted %d items price data.", count)
+	logging.Logger.Errorf("Successfully inserted %d items price data.", count)
 }

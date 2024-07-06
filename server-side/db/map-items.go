@@ -5,13 +5,16 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/naddiemathkour/osrs_market_analysis/logging"
 	models "github.com/naddiemathkour/osrs_market_analysis/models"
 )
 
-func MapItems(db *sqlx.DB) {
+func MapItems() {
+	// Get db connection
+	db := Connect("POST")
+	defer db.Close()
+
 	//handle http request
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/mapping", nil)
 	if err != nil {
