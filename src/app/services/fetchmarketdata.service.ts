@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environments';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
+import { IItemListings } from '../interfaces/itemlistings.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,19 @@ import { Observable } from 'rxjs';
 export class FetchmarketdataService {
   constructor(private _http: HttpClient) {}
 
-  getMarketData(): Observable<any> {
-    return this._http.get(`${environment.apiUrl}api/data`);
+  getMarketData(): Observable<IItemListings[]> {
+    return timer(0, 15000).pipe(
+      switchMap(() =>
+        this._http
+          .get<{ items: IItemListings[] }>(`${environment.apiUrl}api/data`)
+          .pipe(
+            map((data) => data.items),
+            catchError((error) => {
+              console.error('Error fetching market data:', error);
+              return of([] as IItemListings[]);
+            })
+          )
+      )
+    );
   }
 }
