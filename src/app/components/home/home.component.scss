@@ -1,11 +1,12 @@
 .outline {
   border: 1px solid black;
   background-color: white;
-  height: calc(100vh - 72px);
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 .page-container {
   background-color: #d5c2a7;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  overflow-y: auto;
 }
