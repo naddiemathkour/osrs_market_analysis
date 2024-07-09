@@ -87,5 +87,7 @@ func MapPrices() {
 		}
 	}
 
+	db.Close()
+
 	logging.Logger.Errorf("Successfully inserted %d items price data.", count)
 }

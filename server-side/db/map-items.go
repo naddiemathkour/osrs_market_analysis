@@ -94,5 +94,7 @@ func MapItems() {
 		}
 	}
 
+	db.Close()
+
 	logging.Logger.Info("Successfully added item updates.")
 }

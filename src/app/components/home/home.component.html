@@ -1,12 +1,10 @@
-<h1>RS Item List</h1>
-<!-- <!-- <button (click)="printTest()">Print Test</button> -->
-<button (click)="sub()">Unsub</button>
-<div>
-  @for (item of showdata; track item.id) {
-  <div>
-    <h3>{{ item.name }}</h3>
-    <p>{{ item.spread }}</p>
-    <hr />
+<div class="container-fluid g-0 p-0 m-0 page-container">
+  <h1>RS Item List</h1>
+  <button (click)="toggleFlippingView()">Show flipping view</button>
+  <button (click)="toggleAlchingView()">Show alching view</button>
+  <div class="container-fluid w-75 outline">
+    @if (flippingview) {
+    <app-flipping-view [listingData$]="listingData$"></app-flipping-view>
+    }
   </div>
-  }
 </div>

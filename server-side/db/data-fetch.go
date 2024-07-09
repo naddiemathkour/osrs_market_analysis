@@ -48,6 +48,8 @@ func DataFetchHandler(w http.ResponseWriter, r *http.Request) {
 		ItemListings: items,
 	}
 
+	db.Close()
+
 	w.Header().Set("Content-Type", "application/json")
 
 	if err := json.NewEncoder(w).Encode(response); err != nil {

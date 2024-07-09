@@ -1,14 +1,16 @@
 export interface IItemListings {
-  avghighprice: number;
-  avglowprice: number;
-  buylimit: number;
-  examine: string;
-  highpricevolume: number;
-  icon: string;
   id: number;
-  lowpricevolume: number;
-  members: true;
   name: string;
+  icon: string;
+  examine: string;
+  members: true;
+  buylimit: number;
+  highalch: number;
+  lowalch: number;
+  avghighprice: number;
+  highpricevolume: number;
+  avglowprice: number;
+  lowpricevolume: number;
   spread: number;
   margin: number;
   timestamp: Date;

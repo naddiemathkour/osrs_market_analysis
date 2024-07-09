@@ -1,56 +1,37 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FetchmarketdataService } from '../../services/fetchmarketdata.service';
-import {
-  firstValueFrom,
-  map,
-  Observable,
-  of,
-  Subscription,
-  switchMap,
-  tap,
-  timer,
-} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { IItemListings } from '../../interfaces/itemlistings.interface';
 import { CommonModule } from '@angular/common';
-import { tick } from '@angular/core/testing';
+import { FlippingViewComponent } from '../flipping-view/flipping-view.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FlippingViewComponent],
   providers: [FetchmarketdataService],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit, OnDestroy {
-  spreadData$: Observable<IItemListings[]> = new Observable<IItemListings[]>();
-  showdata: IItemListings[] = [];
-  subscription: Subscription = new Subscription();
+export class HomeComponent implements OnInit {
+  listingData$: Observable<IItemListings[]> = new Observable<IItemListings[]>();
+  flippingview: boolean = false;
+  alchingview: boolean = false;
 
   constructor(private _fetchMarketData: FetchmarketdataService) {}
 
   ngOnInit() {
-    this.pollService();
+    // Create cold observable to be subscribed to in child components
+    this.listingData$ = this._fetchMarketData.getMarketData();
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
+  toggleFlippingView(): void {
+    this.alchingview = false;
+    this.flippingview = true;
   }
 
-  pollService() {
-    this.spreadData$ = this._fetchMarketData.getMarketData();
-  }
-
-  sub(): void {
-    if (this.subscription) this.subscription.unsubscribe();
-
-    this.subscription = this.spreadData$.subscribe({
-      next: (data) => {
-        this.showdata = data;
-      },
-      error: (error) => {
-        console.error('Error subscribing to Observer: ', error);
-      },
-    });
+  toggleAlchingView(): void {
+    this.flippingview = false;
+    this.alchingview = true;
   }
 }
