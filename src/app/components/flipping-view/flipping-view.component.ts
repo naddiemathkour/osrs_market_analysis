@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IItemListings } from '../../interfaces/itemlistings.interface';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,8 +10,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './flipping-view.component.html',
   styleUrl: './flipping-view.component.scss',
 })
-export class FlippingViewComponent implements OnInit {
+export class FlippingViewComponent implements OnInit, OnDestroy {
   @Input() listingData$!: Observable<IItemListings[]>;
+  itemData: IItemListings[] = [];
+  private _subscription: Subscription = new Subscription();
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._subscription = this.listingData$.subscribe(
+      (data) => (this.itemData = data.filter((a) => a.margin > 0.1))
+    );
+  }
+
+  ngOnDestroy(): void {
+    this._subscription.unsubscribe();
+  }
 }

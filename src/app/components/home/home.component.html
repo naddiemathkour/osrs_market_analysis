@@ -1,8 +1,14 @@
 <div class="container-fluid g-0 p-0 m-0 page-container">
   <h1>RS Item List</h1>
-  <button (click)="toggleFlippingView()">Show flipping view</button>
-  <button (click)="toggleAlchingView()">Show alching view</button>
-  <div class="container-fluid w-75 outline">
+  <div class="row justify-content-around m-2">
+    <button class="col-2" (click)="toggleFlippingView()">
+      Show flipping view
+    </button>
+    <button class="col-2" (click)="toggleAlchingView()">
+      Show alching view
+    </button>
+  </div>
+  <div class="container-fluid outline">
     @if (flippingview) {
     <app-flipping-view [listingData$]="listingData$"></app-flipping-view>
     }
