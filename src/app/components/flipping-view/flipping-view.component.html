@@ -1,5 +1,5 @@
-@for (item of itemData; track item.id) {
-<div class="container-fluid">
+<!-- @for (item of itemData; track item.id) { -->
+<!-- <div class="container-fluid">
   <div
     class="row justify-content-between align-items-center item-row-container"
   >
@@ -19,9 +19,70 @@
       <h4>Profit Margin: {{ item.margin }}%</h4>
     </div>
     <div class="col-1">
-      <span>Since: {{ item.timestamp | date : "short" : "UTC" }}</span>
+      <span>Since: {{ item.timestamp | date : "shortTime" : "UTC" }}</span>
     </div>
   </div>
-</div>
+</div> -->
 
-}
+<cdk-accordion class="example-accordion">
+  @for (item of itemData; track item; let index = $index) {
+  <cdk-accordion-item
+    #accordionItem="cdkAccordionItem"
+    [expanded]="isExpanded(item.id)"
+    role="button"
+  >
+    <div
+      class="container-fluid"
+      (click)="accordionItem.toggle(); expandItem(item.id)"
+    >
+      <div
+        class="row justify-content-between align-items-center item-row-container"
+      >
+        <div class="col-2">
+          <img src="../../../assets/sgs.webp" alt="" class="item-icon" />
+        </div>
+        <div class="col text-center">
+          <h4>{{ item.name }}</h4>
+        </div>
+
+        <div class="col text-center">
+          <h4>Buy Limit: {{ item.buylimit }}</h4>
+        </div>
+        <div class="col text-center">
+          <h4>Profit Margin: {{ item.margin }}%</h4>
+        </div>
+        <div class="col text-center">
+          <h4>Since: {{ item.timestamp | date : "shortTime" : "UTC" }}</h4>
+        </div>
+        <div
+          role="region"
+          [style.display]="accordionItem.expanded ? '' : 'none'"
+          [attr.id]="'accordion-body-' + index"
+          [attr.aria-labelledby]="'accordion-header-' + index"
+        >
+          <hr />
+          <div class="row d-flex">
+            <div class="col text-center">
+              <h4>Buying Price: {{ item.avghighprice }}</h4>
+            </div>
+            <div class="col text-center">
+              <h4>Buying Volume: {{ item.highpricevolume }}</h4>
+            </div>
+            <div class="col text-center">
+              <h4>Selling Price: {{ item.avglowprice }}</h4>
+            </div>
+            <div class="col text-center">
+              <h4>Selling Volume: {{ item.lowpricevolume }}</h4>
+            </div>
+            <div class="col text-center">
+              <h4>Spread: {{ item.spread }}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </cdk-accordion-item>
+  }
+</cdk-accordion>
+
+<!-- } -->
