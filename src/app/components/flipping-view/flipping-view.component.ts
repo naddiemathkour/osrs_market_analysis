@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IItemListings } from '../../interfaces/itemlistings.interface';
 import { Observable, Subscription } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-flipping-view',
@@ -16,9 +16,9 @@ export class FlippingViewComponent implements OnInit, OnDestroy {
   private _subscription: Subscription = new Subscription();
 
   ngOnInit(): void {
-    this._subscription = this.listingData$.subscribe(
-      (data) => (this.itemData = data.filter((a) => a.margin > 0.1))
-    );
+    this._subscription = this.listingData$.subscribe((data) => {
+      this.itemData = data.filter((a) => a.margin > 0.25);
+    });
   }
 
   ngOnDestroy(): void {

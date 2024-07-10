@@ -87,6 +87,12 @@ func MapPrices() {
 		}
 	}
 
+	deleteQuery := `DELETE FROM price WHERE timestamp < NOW() -'20 minutes'::interval;`
+	_, err = db.Exec(deleteQuery)
+	if err != nil {
+		logging.Logger.Fatalf("Failed to delete stale data: %v", err)
+	}
+
 	db.Close()
 
 	logging.Logger.Errorf("Successfully inserted %d items price data.", count)

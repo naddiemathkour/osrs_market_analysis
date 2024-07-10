@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FetchmarketdataService } from '../../services/fetchmarketdata.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IItemListings } from '../../interfaces/itemlistings.interface';
 import { CommonModule } from '@angular/common';
 import { FlippingViewComponent } from '../flipping-view/flipping-view.component';
@@ -15,6 +15,7 @@ import { FlippingViewComponent } from '../flipping-view/flipping-view.component'
 })
 export class HomeComponent implements OnInit {
   listingData$: Observable<IItemListings[]> = new Observable<IItemListings[]>();
+  test$!: Observable<IItemListings[]>;
   flippingview: boolean = false;
   alchingview: boolean = false;
 

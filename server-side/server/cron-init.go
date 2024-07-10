@@ -14,7 +14,7 @@ func StartCronJob() *cron.Cron {
 	c := cron.New()
 
 	// Add function to be run every 5 minutes
-	_, err := c.AddFunc("*/5 * * * *", func() {
+	_, err := c.AddFunc("*/1 * * * *", func() {
 		logging.Logger.Info("CRON FUNCTION START")
 		start := time.Now()
 		db.MapItems()

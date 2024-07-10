@@ -11,10 +11,10 @@ export class FetchmarketdataService {
   constructor(private _http: HttpClient) {}
 
   getMarketData(): Observable<IItemListings[]> {
-    return timer(0, 0.5 * 60 * 1000).pipe(
+    return timer(0, 0.1 * 60 * 1000).pipe(
       switchMap(() =>
         this._http
-          .get<{ items: IItemListings[] }>(`${environment.apiUrl}api/data`)
+          .get<{ items: IItemListings[] }>(`${environment.apiUrl}/api/data`)
           .pipe(
             map((data) => data.items),
             catchError((error) => {

@@ -19,7 +19,7 @@
       <h4>Profit Margin: {{ item.margin }}%</h4>
     </div>
     <div class="col-1">
-      <span>Since: {{ item.timestamp | date : "shortTime" }}</span>
+      <span>Since: {{ item.timestamp | date : "short" : "UTC" }}</span>
     </div>
   </div>
 </div>
