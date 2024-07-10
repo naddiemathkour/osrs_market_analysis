@@ -1,4 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { IItemListings } from '../../interfaces/itemlistings.interface';
 import { Observable, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -13,6 +20,7 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
 })
 export class FlippingViewComponent implements OnInit, OnDestroy {
   @Input() listingData$!: Observable<IItemListings[]>;
+  @Input() showMembers!: boolean;
   itemData: IItemListings[] = [];
   expandedItem: number = -1;
   private _subscription: Subscription = new Subscription();
@@ -20,7 +28,7 @@ export class FlippingViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._subscription = this.listingData$.subscribe((data) => {
       this.itemData = data.filter(
-        (a) => a.margin > 0.25 && a.lowpricevolume + a.highpricevolume >= 25
+        (a) => a.margin > 1 && a.lowpricevolume + a.highpricevolume >= 25
       );
     });
   }

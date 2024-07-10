@@ -8,9 +8,21 @@
       <button class="col-2" (click)="toggleAlchingView()">
         Show alching view
       </button>
+      <label class="col-3">
+        <input type="checkbox" [(ngModel)]="showMembers" />
+        <span>{{ " Show Members Items" }}</span>
+      </label>
     </div>
     @if (flippingview) {
-    <app-flipping-view [listingData$]="listingData$"></app-flipping-view>
+    <app-flipping-view
+      [listingData$]="listingData$"
+      [showMembers]="showMembers"
+    ></app-flipping-view>
+    } @if (alchingview) {
+    <app-alching-view
+      [listingData$]="listingData$"
+      [showMembers]="showMembers"
+    ></app-alching-view>
     }
   </div>
 </div>
