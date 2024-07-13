@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FlippingViewComponent } from '../flipping-view/flipping-view.component';
 import { AlchingViewComponent } from '../alching-view/alching-view.component';
 import { FormsModule } from '@angular/forms';
+import { ItemCardsComponent } from '../item-cards/item-cards.component';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     FlippingViewComponent,
     AlchingViewComponent,
+    ItemCardsComponent,
   ],
   providers: [FetchmarketdataService],
   templateUrl: './home.component.html',
@@ -37,6 +39,7 @@ export class HomeComponent implements OnInit {
   toggleFlippingView(): void {
     this.alchingview = false;
     this.flippingview = true;
+    console.log(this.flippingview, this.alchingview);
   }
 
   toggleAlchingView(): void {

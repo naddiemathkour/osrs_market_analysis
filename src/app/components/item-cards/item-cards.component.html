@@ -1,0 +1,116 @@
+@if (!filters.dataType) {
+<div class="container-fluid">
+  <h1 class="text-center">Choose a view:</h1>
+</div>
+
+<div
+  class="container d-flex m-auto g-0 p-0 choice-container justify-content-around mt-5"
+>
+  <button
+    class="col h-100 p-0 btn btn-outline-light"
+    (click)="filters.dataType = 'flip'; filterItems(filters)"
+  >
+    <h2>Flipping View</h2>
+    <img src="../../../assets/coins.webp" class="data-type-choice-icon" />
+  </button>
+  <button
+    class="col h-100 p-0 btn btn-outline-light"
+    (click)="filters.dataType = 'alch'; filterItems(filters)"
+  >
+    <h2>Alching View</h2>
+    <img src="../../../assets/High-Alch.png" class="data-type-choice-icon" />
+  </button>
+</div>
+} @else {
+<div class="filter-block">Filters Here</div>
+} @for (item of itemData; track item.id) {
+<mat-card appearance="raised" class="container g-0 item-container mb-3">
+  <cdk-accordion>
+    <cdk-accordion-item
+      #accordionItem="cdkAccordionItem"
+      role="button"
+      [expanded]="getAccordionState(item.id)"
+    >
+      <section
+        class="item-row-container w-100"
+        (click)="setAccordionState(item.id)"
+      >
+        <mat-card-content class="w-100">
+          <div
+            class="row d-flex w-100 align-items-center justify-content-around m-auto"
+          >
+            <img
+              mat-card-sm-image
+              src="../../../assets/sgs.webp"
+              class="col item-icon image-fluid"
+            />
+            <div class="col text-center">
+              <h4>{{ item.name }}</h4>
+            </div>
+            <div class="col text-center">
+              <h4>Buy Limit: {{ item.buylimit }}</h4>
+            </div>
+            <div class="col text-center">
+              <h4>
+                {{
+                  filters.dataType === "flip"
+                    ? "Profit Margin: " + item.margin + "%"
+                    : "Proft Per Alch: " +
+                      (item.highalch - item.avghighprice - nat.avghighprice)
+                }}
+              </h4>
+            </div>
+            <div class="col text-center">
+              <h4>Since: {{ item.timestamp | date : "shortTime" }}</h4>
+            </div>
+          </div>
+          <section
+            role="region"
+            [style.display]="getAccordionState(item.id) ? 'block' : 'none'"
+          >
+            <hr />
+            <div class="row d-flex">
+              <div class="col text-center">
+                <h4>Buying Price: {{ item.avghighprice }}</h4>
+              </div>
+              @if (filters.dataType === 'flip') {
+              <div class="col text-center">
+                <h4>Buying Volume: {{ item.highpricevolume }}</h4>
+              </div>
+              <div class="col text-center">
+                <h4>Selling Price: {{ item.avglowprice }}</h4>
+              </div>
+              <div class="col text-center">
+                <h4>Selling Volume: {{ item.lowpricevolume }}</h4>
+              </div>
+              <div class="col text-center">
+                <h4>Spread: {{ item.spread }}</h4>
+              </div>
+              } @else if (filters.dataType === 'alch') {
+              <div class="col text-center">
+                <h4>
+                  5 Minute Volume:
+                  {{ item.lowpricevolume + item.highpricevolume }}
+                </h4>
+              </div>
+              <div class="col text-center">
+                <h4>High Alch Value: {{ item.highalch }}</h4>
+              </div>
+              <div class="col text-center">
+                <h4>
+                  Buy Limit Profit:
+                  {{
+                    (item.highalch - item.avghighprice - nat.avghighprice) *
+                      item.buylimit
+                  }}
+                </h4>
+              </div>
+              }
+            </div>
+          </section>
+        </mat-card-content>
+      </section>
+    </cdk-accordion-item>
+  </cdk-accordion>
+</mat-card>
+}

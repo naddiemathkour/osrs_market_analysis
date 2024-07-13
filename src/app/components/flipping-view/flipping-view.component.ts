@@ -26,11 +26,11 @@ export class FlippingViewComponent implements OnInit, OnDestroy {
   private _subscription: Subscription = new Subscription();
 
   ngOnInit(): void {
-    this._subscription = this.listingData$.subscribe((data) => {
-      this.itemData = data.filter(
-        (a) => a.margin > 1 && a.lowpricevolume + a.highpricevolume >= 25
-      );
-    });
+    // this._subscription = this.listingData$.subscribe((data) => {
+    //   this.itemData = data.filter(
+    //     (a) => a.margin > 1 && a.lowpricevolume + a.highpricevolume >= 25
+    //   );
+    // });
   }
 
   ngOnDestroy(): void {
