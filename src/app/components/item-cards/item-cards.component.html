@@ -22,7 +22,7 @@
   </button>
 </div>
 } @else {
-<div class="filter-block">Filters Here</div>
+<app-listing-filters></app-listing-filters>
 } @for (item of itemData; track item.id) {
 <mat-card appearance="raised" class="container g-0 item-container mb-3">
   <cdk-accordion>

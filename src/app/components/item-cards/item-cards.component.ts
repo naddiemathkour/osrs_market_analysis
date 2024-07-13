@@ -2,15 +2,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { IItemListings } from '../../interfaces/itemlistings.interface';
-import { filter, Observable, Subscription, switchMap, timer } from 'rxjs';
+import { Observable, Subscription, switchMap, timer } from 'rxjs';
 import { FetchmarketdataService } from '../../services/fetchmarketdata.service';
 import { CommonModule } from '@angular/common';
 import { IFilters } from '../../interfaces/filters.interface';
+import { ListingFiltersComponent } from '../listing-filters/listing-filters.component';
 
 @Component({
   selector: 'app-item-cards',
   standalone: true,
-  imports: [CommonModule, MatCardModule, CdkAccordionModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    CdkAccordionModule,
+    ListingFiltersComponent,
+  ],
   providers: [FetchmarketdataService],
   templateUrl: './item-cards.component.html',
   styleUrl: './item-cards.component.scss',
