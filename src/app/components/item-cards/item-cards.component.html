@@ -22,7 +22,10 @@
   </button>
 </div>
 } @else {
-<app-listing-filters [filterValues]="filters"></app-listing-filters>
+<app-listing-filters
+  [filterValues]="filters"
+  (updateFilter)="updateFilters($event)"
+></app-listing-filters>
 } @for (item of itemData; track item.id) {
 <mat-card appearance="raised" class="container g-0 item-container mb-3">
   <cdk-accordion>
@@ -55,8 +58,7 @@
                 {{
                   filters.dataType === "flip"
                     ? "Profit Margin: " + item.margin + "%"
-                    : "Alch Profit: " +
-                      (item.highalch - item.avghighprice - nat.avghighprice)
+                    : "Alch Profit: " + item.alchprof
                 }}
               </h4>
             </div>
@@ -90,7 +92,7 @@
               <div class="col text-center">
                 <h4>
                   5 Minute Volume:
-                  {{ item.lowpricevolume + item.highpricevolume }}
+                  {{ item.totalvolume }}
                 </h4>
               </div>
               <div class="col text-center">
@@ -99,10 +101,7 @@
               <div class="col text-center">
                 <h4>
                   Buy Limit Profit:
-                  {{
-                    (item.highalch - item.avghighprice - nat.avghighprice) *
-                      item.buylimit
-                  }}
+                  {{ item.buylimitprof }}
                 </h4>
               </div>
               }

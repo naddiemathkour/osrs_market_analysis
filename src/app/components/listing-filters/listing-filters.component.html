@@ -31,13 +31,14 @@
       </mat-form-field>
       @if(selectedFilter) {
       <mat-slider min="1" max="100" step="1" showTickMarks discrete class="col">
-        <input matSliderThumb />
+        <input matSliderThumb (change)="setFilter($event)" />
       </mat-slider>
       }
     </div>
 
     <mat-checkbox class="col col-lg-3" (change)="toggleMembers($event)"
-      ><span>Show Members-only items?</span></mat-checkbox
+      ><span>Hide Members-only items?</span></mat-checkbox
     >
+    <button (click)="onFilter()">Filter</button>
   </div>
 </div>

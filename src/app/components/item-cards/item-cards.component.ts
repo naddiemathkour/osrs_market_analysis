@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { IItemListings } from '../../interfaces/itemlistings.interface';
-import { Observable, Subscription, switchMap, timer } from 'rxjs';
+import { map, Observable, of, Subscription, switchMap, tap, timer } from 'rxjs';
 import { FetchmarketdataService } from '../../services/fetchmarketdata.service';
 import { CommonModule } from '@angular/common';
 import { IFilters } from '../../interfaces/filters.interface';
@@ -26,6 +26,7 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   marketData$!: Observable<IItemListings[]>;
   accordionState: Map<number, boolean> = new Map();
   itemData: IItemListings[] = [];
+  rawItemData: IItemListings[] = [];
   testBool: boolean = true;
   filters: IFilters = {} as IFilters;
   nat = {} as IItemListings;
@@ -55,7 +56,25 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
     setTimeout(
       () =>
         (this.marketData$ = timer(0, 1 * 60 * 1000).pipe(
-          switchMap(() => this._fetchMarketData.getMarketData())
+          switchMap(() =>
+            this._fetchMarketData.getMarketData().pipe(
+              tap(
+                (data: IItemListings[]) =>
+                  (this.nat = data.filter(
+                    (item) => item.name === 'Nature rune'
+                  )[0])
+              ),
+              map((data: IItemListings[]) => {
+                for (const item of data) {
+                  item.alchprof =
+                    item.highalch - item.avghighprice - this.nat.avghighprice;
+                  item.totalvolume = item.highpricevolume + item.lowpricevolume;
+                  item.buylimitprof = item.alchprof * item.buylimit;
+                }
+                return data;
+              })
+            )
+          )
         )),
       0
     );
@@ -64,27 +83,38 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   subscribeToData() {
     if (this.marketData$)
       this._subscription = this.marketData$.subscribe((data) => {
-        this.itemData = data;
+        this.rawItemData = data;
         this.filterItems(this.filters);
       });
   }
 
   filterItems(filters: IFilters): void {
-    console.log('Filters: ', filters);
-    // Set nature rune value for alch pricing
-    this.nat = this.itemData.filter((item) => item.name === 'Nature rune')[0];
-
+    console.log('Filtering Data: ', this.filters);
     // Filter through itemData based on filter options
-    this.itemData = this.itemData.filter((item) => {
-      if (filters.dataType === 'flip') {
-        return item.margin > (filters.margin?.filter || 1);
-      } else {
-        return (
-          item.highalch - item.avghighprice - this.nat.avghighprice >
-          (filters.alchprof?.filter || 1)
-        );
+    this.itemData = this.rawItemData.filter((item) => {
+      if (
+        filters.dataType === 'flip' &&
+        item.margin < (filters.margin?.filter || 1)
+      ) {
+        return false;
+      } else if (
+        this.filters.dataType === 'alch' &&
+        item.alchprof! - this.nat.avghighprice < (filters.alchprof.filter || 1)
+      ) {
+        return false;
       }
+      if (item.margin < (this.filters.margin.filter || 1)) return false;
+      if (item.alchprof! < (this.filters.alchprof.filter || 1)) return false;
+      if (item.buylimit < (this.filters.buyLimit.filter || 1)) return false;
+      if (item.highpricevolume < (this.filters.highVolume.filter || 1))
+        return false;
+      if (item.lowpricevolume < (this.filters.lowVolume.filter || 1))
+        return false;
+      if (item.members && !this.filters.members) return false;
+      return true;
     });
+
+    console.log('Filtering Complete: ', this.itemData);
   }
 
   setAccordionState(id: number): void {
@@ -95,5 +125,10 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
 
   getAccordionState(id: number): boolean {
     return this.accordionState.get(id) || false;
+  }
+
+  updateFilters(event: IFilters) {
+    this.filters = { ...event };
+    this.filterItems(this.filters);
   }
 }

@@ -39,7 +39,6 @@ export class HomeComponent implements OnInit {
   toggleFlippingView(): void {
     this.alchingview = false;
     this.flippingview = true;
-    console.log(this.flippingview, this.alchingview);
   }
 
   toggleAlchingView(): void {

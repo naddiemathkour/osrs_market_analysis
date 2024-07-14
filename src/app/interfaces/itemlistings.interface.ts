@@ -14,4 +14,7 @@ export interface IItemListings {
   spread: number;
   margin: number;
   timestamp: Date;
+  buylimitprof?: number;
+  totalvolume: number;
+  alchprof?: number;
 }
