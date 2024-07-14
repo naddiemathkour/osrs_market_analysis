@@ -33,6 +33,15 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   constructor(private _fetchMarketData: FetchmarketdataService) {}
 
   ngOnInit(): void {
+    this.filters = {
+      dataType: '',
+      alchprof: { max: 0, filter: 1 },
+      margin: { max: 0, filter: 1 },
+      buyLimit: { max: 0, filter: 1 },
+      highVolume: { max: 0, filter: 1 },
+      lowVolume: { max: 0, filter: 1 },
+      members: true,
+    };
     this.fetchData();
   }
 
@@ -42,37 +51,39 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
 
   fetchData(): void {
     // Poll http service call to refresh data every minute
-    this.marketData$ = timer(0, 1 * 60 * 1000).pipe(
-      switchMap(() => this._fetchMarketData.getMarketData())
+    // I don't know why, but this needs to timeout for 0 milliseconds to work
+    setTimeout(
+      () =>
+        (this.marketData$ = timer(0, 1 * 60 * 1000).pipe(
+          switchMap(() => this._fetchMarketData.getMarketData())
+        )),
+      0
     );
   }
 
-  testFunc(): void {
-    console.log('Test func');
+  subscribeToData() {
+    if (this.marketData$)
+      this._subscription = this.marketData$.subscribe((data) => {
+        this.itemData = data;
+        this.filterItems(this.filters);
+      });
   }
 
   filterItems(filters: IFilters): void {
-    this._subscription = this.marketData$.subscribe((data) => {
-      this.nat = data.filter((item) => item.name === 'Nature rune')[0];
+    console.log('Filters: ', filters);
+    // Set nature rune value for alch pricing
+    this.nat = this.itemData.filter((item) => item.name === 'Nature rune')[0];
+
+    // Filter through itemData based on filter options
+    this.itemData = this.itemData.filter((item) => {
       if (filters.dataType === 'flip') {
-        this.itemData = data.filter(
-          (item) => item.margin > (filters.margin || 1)
-        );
-      } else if (filters.dataType === 'alch') {
-        this.itemData = data.filter(
-          (item) =>
-            item.highalch - item.avghighprice - this.nat.avghighprice >
-            (filters.alchprof || 1)
+        return item.margin > (filters.margin?.filter || 1);
+      } else {
+        return (
+          item.highalch - item.avghighprice - this.nat.avghighprice >
+          (filters.alchprof?.filter || 1)
         );
       }
-    });
-
-    this.itemData = this.itemData.filter((item) => {
-      if (!filters.members && item.members) return false;
-      if (item.buylimit < (filters.buyLimit || 0)) return false;
-      if (item.highpricevolume < (filters.highVolume || 1)) return false;
-      if (item.lowpricevolume < (filters.lowVolume || 1)) return false;
-      return true;
     });
   }
 

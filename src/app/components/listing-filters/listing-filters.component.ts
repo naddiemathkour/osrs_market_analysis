@@ -1,8 +1,21 @@
-import { Component, Output } from '@angular/core';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import {
+  MatButtonToggleChange,
+  MatButtonToggleModule,
+} from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  MatCheckboxChange,
+  MatCheckboxModule,
+} from '@angular/material/checkbox';
 import { IFilters } from '../../interfaces/filters.interface';
 
 @Component({
@@ -17,6 +30,29 @@ import { IFilters } from '../../interfaces/filters.interface';
   templateUrl: './listing-filters.component.html',
   styleUrl: './listing-filters.component.scss',
 })
-export class ListingFiltersComponent {
-  @Output() filterValues: IFilters = {} as IFilters;
+export class ListingFiltersComponent implements OnChanges, OnInit {
+  @Input() filterValues!: IFilters;
+  selectedFilter: string | null = null;
+  filterNames = {
+    buyLimit: 'Buy Limit',
+    margin: 'Profit Margin',
+    alchprof: 'Alch Profit',
+    highVolume: 'High Volume',
+    lowVolume: 'Low Volume',
+  };
+
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
+  toggleView(event: MatButtonToggleChange) {
+    this.filterValues.dataType = event.value;
+  }
+
+  toggleMembers(event: MatCheckboxChange) {
+    this.filterValues.members = event.checked;
+    console.log(this.filterValues);
+  }
 }

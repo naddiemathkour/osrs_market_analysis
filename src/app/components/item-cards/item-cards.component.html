@@ -8,21 +8,21 @@
 >
   <button
     class="col h-100 p-0 btn btn-outline-light"
-    (click)="filters.dataType = 'flip'; filterItems(filters)"
+    (click)="filters.dataType = 'flip'; subscribeToData()"
   >
     <h2>Flipping View</h2>
     <img src="../../../assets/coins.webp" class="data-type-choice-icon" />
   </button>
   <button
     class="col h-100 p-0 btn btn-outline-light"
-    (click)="filters.dataType = 'alch'; filterItems(filters)"
+    (click)="filters.dataType = 'alch'; subscribeToData()"
   >
     <h2>Alching View</h2>
     <img src="../../../assets/High-Alch.png" class="data-type-choice-icon" />
   </button>
 </div>
 } @else {
-<app-listing-filters></app-listing-filters>
+<app-listing-filters [filterValues]="filters"></app-listing-filters>
 } @for (item of itemData; track item.id) {
 <mat-card appearance="raised" class="container g-0 item-container mb-3">
   <cdk-accordion>
@@ -55,7 +55,7 @@
                 {{
                   filters.dataType === "flip"
                     ? "Profit Margin: " + item.margin + "%"
-                    : "Proft Per Alch: " +
+                    : "Alch Profit: " +
                       (item.highalch - item.avghighprice - nat.avghighprice)
                 }}
               </h4>
