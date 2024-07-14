@@ -30,7 +30,7 @@ import { IFilters } from '../../interfaces/filters.interface';
   templateUrl: './listing-filters.component.html',
   styleUrl: './listing-filters.component.scss',
 })
-export class ListingFiltersComponent implements OnChanges, OnInit {
+export class ListingFiltersComponent implements OnInit {
   @Input() filterValues!: IFilters;
   @Output() updateFilter: EventEmitter<IFilters> = new EventEmitter<IFilters>();
   newFilters!: IFilters;
@@ -54,10 +54,6 @@ export class ListingFiltersComponent implements OnChanges, OnInit {
       lowVolume: { max: 0, filter: 1 },
       members: true,
     };
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
 
   toggleView(event: MatButtonToggleChange) {
@@ -88,13 +84,14 @@ export class ListingFiltersComponent implements OnChanges, OnInit {
         break;
 
       default:
-        console.log('Error saving filter. Filter field name does not exist...');
+        console.error(
+          'Error saving filter. Filter field name does not exist...'
+        );
         break;
     }
   }
 
   onFilter(): void {
-    console.log('Sending Filters: ', this.newFilters);
     this.updateFilter.emit(this.newFilters);
   }
 }

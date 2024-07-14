@@ -89,7 +89,6 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   }
 
   filterItems(filters: IFilters): void {
-    console.log('Filtering Data: ', this.filters);
     // Filter through itemData based on filter options
     this.itemData = this.rawItemData.filter((item) => {
       if (
@@ -113,8 +112,6 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
       if (item.members && !this.filters.members) return false;
       return true;
     });
-
-    console.log('Filtering Complete: ', this.itemData);
   }
 
   setAccordionState(id: number): void {
