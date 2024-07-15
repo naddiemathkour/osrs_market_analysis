@@ -1,4 +1,4 @@
-<div class="container g-0 mt-3">
+<div class="container g-0 mt-3 mb-2">
   <div class="row justify-content-evenly align-items-center">
     <mat-button-toggle-group
       name="dataTypeView"
@@ -30,7 +30,13 @@
         </mat-select>
       </mat-form-field>
       @if(selectedFilter) {
-      <mat-slider min="1" max="100" step="1" showTickMarks discrete class="col">
+      <mat-slider
+        min="1"
+        [max]="getMaxValue(selectedFilter)"
+        [step]="(getMaxValue(selectedFilter) / 100).toFixed(0)"
+        discrete
+        class="col"
+      >
         <input matSliderThumb (change)="setFilter($event)" />
       </mat-slider>
       }
@@ -39,6 +45,13 @@
     <mat-checkbox class="col col-lg-3" (change)="toggleMembers($event)"
       ><span>Hide Members-only items?</span></mat-checkbox
     >
-    <button (click)="onFilter()">Filter</button>
+    <div class="row justify-content-center">
+      <button class="btn btn-success col col-lg-2 m-1" (click)="onFilter()">
+        Filter
+      </button>
+      <button class="btn btn-danger col col-lg-2 m-1" (click)="clearFilters()">
+        Clear Filters
+      </button>
+    </div>
   </div>
 </div>

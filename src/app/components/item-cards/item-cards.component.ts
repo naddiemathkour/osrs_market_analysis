@@ -97,7 +97,7 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
         return false;
       } else if (
         this.filters.dataType === 'alch' &&
-        item.alchprof! - this.nat!.avghighprice < (filters.alchprof.filter || 1)
+        item.alchprof! < (filters.alchprof.filter || 1)
       ) {
         return false;
       }
@@ -109,6 +109,30 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
       if (item.members && !this.filters.members) return false;
       return true;
     });
+
+    this.setMaxFilterValues();
+  }
+
+  setMaxFilterValues(): void {
+    for (const item of this.itemData) {
+      this.filters.alchprof.max = Math.max(
+        this.filters.alchprof.max,
+        item.alchprof!
+      );
+      this.filters.buyLimit.max = Math.max(
+        this.filters.buyLimit.max,
+        item.buylimit
+      );
+      this.filters.margin.max = Math.max(this.filters.margin.max, item.margin);
+      this.filters.highVolume.max = Math.max(
+        this.filters.highVolume.max,
+        item.highpricevolume
+      );
+      this.filters.lowVolume.max = Math.max(
+        this.filters.lowVolume.max,
+        item.lowpricevolume
+      );
+    }
   }
 
   setAccordionState(id: number): void {
@@ -128,6 +152,5 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
     }
     this.filters = { ...event };
     this.filterItems(this.filters);
-    console.log(this.filters);
   }
 }

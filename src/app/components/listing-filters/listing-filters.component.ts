@@ -1,12 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  EventEmitter,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import {
   MatButtonToggleChange,
   MatButtonToggleModule,
@@ -34,6 +26,7 @@ export class ListingFiltersComponent implements OnInit {
   @Input() filterValues!: IFilters;
   @Output() updateFilter: EventEmitter<IFilters> = new EventEmitter<IFilters>();
   newFilters!: IFilters;
+  resetFilters!: IFilters;
   selectedFilter: string | null = null;
 
   filterNames = {
@@ -48,7 +41,17 @@ export class ListingFiltersComponent implements OnInit {
     this.newFilters = {
       dataType: this.filterValues.dataType,
       alchprof: { max: 0, filter: 1 },
-      margin: { max: 0, filter: 1 },
+      margin: { max: 0, filter: 5 },
+      buyLimit: { max: 0, filter: 1 },
+      highVolume: { max: 0, filter: 1 },
+      lowVolume: { max: 0, filter: 1 },
+      members: true,
+    };
+
+    this.resetFilters = {
+      dataType: this.filterValues.dataType,
+      alchprof: { max: 0, filter: 1 },
+      margin: { max: 0, filter: 5 },
       buyLimit: { max: 0, filter: 1 },
       highVolume: { max: 0, filter: 1 },
       lowVolume: { max: 0, filter: 1 },
@@ -89,6 +92,27 @@ export class ListingFiltersComponent implements OnInit {
         );
         break;
     }
+  }
+
+  getMaxValue(selectedFilter: string): number {
+    switch (selectedFilter) {
+      case this.filterNames.alchprof:
+        return this.filterValues.alchprof.max;
+      case this.filterNames.margin:
+        return this.filterValues.margin.max;
+      case this.filterNames.buyLimit:
+        return this.filterValues.buyLimit.max;
+      case this.filterNames.highVolume:
+        return this.filterValues.highVolume.max;
+      case this.filterNames.lowVolume:
+        return this.filterValues.lowVolume.max;
+      default:
+        return 100;
+    }
+  }
+
+  clearFilters(): void {
+    this.updateFilter.emit(this.resetFilters);
   }
 
   onFilter(): void {
