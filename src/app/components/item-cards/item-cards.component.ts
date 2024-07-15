@@ -29,7 +29,7 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   rawItemData: IItemListings[] = [];
   testBool: boolean = true;
   filters: IFilters = {} as IFilters;
-  nat = {} as IItemListings;
+  nat: IItemListings | undefined = {} as IItemListings;
 
   constructor(private _fetchMarketData: FetchmarketdataService) {}
 
@@ -37,13 +37,14 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
     this.filters = {
       dataType: '',
       alchprof: { max: 0, filter: 1 },
-      margin: { max: 0, filter: 1 },
+      margin: { max: 0, filter: 5 },
       buyLimit: { max: 0, filter: 1 },
       highVolume: { max: 0, filter: 1 },
       lowVolume: { max: 0, filter: 1 },
       members: true,
     };
     this.fetchData();
+    this.subscribeToData();
   }
 
   ngOnDestroy(): void {
@@ -60,14 +61,12 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
             this._fetchMarketData.getMarketData().pipe(
               tap(
                 (data: IItemListings[]) =>
-                  (this.nat = data.filter(
-                    (item) => item.name === 'Nature rune'
-                  )[0])
+                  (this.nat = data.find((item) => item.name === 'Nature rune'))
               ),
               map((data: IItemListings[]) => {
                 for (const item of data) {
                   item.alchprof =
-                    item.highalch - item.avghighprice - this.nat.avghighprice;
+                    item.highalch - item.avghighprice - this.nat!.avghighprice;
                   item.totalvolume = item.highpricevolume + item.lowpricevolume;
                   item.buylimitprof = item.alchprof * item.buylimit;
                 }
@@ -98,12 +97,10 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
         return false;
       } else if (
         this.filters.dataType === 'alch' &&
-        item.alchprof! - this.nat.avghighprice < (filters.alchprof.filter || 1)
+        item.alchprof! - this.nat!.avghighprice < (filters.alchprof.filter || 1)
       ) {
         return false;
       }
-      if (item.margin < (this.filters.margin.filter || 1)) return false;
-      if (item.alchprof! < (this.filters.alchprof.filter || 1)) return false;
       if (item.buylimit < (this.filters.buyLimit.filter || 1)) return false;
       if (item.highpricevolume < (this.filters.highVolume.filter || 1))
         return false;
@@ -125,7 +122,12 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   }
 
   updateFilters(event: IFilters) {
+    if (event.dataType !== this.filters.dataType) {
+      if (event.dataType === 'alch') event.margin.filter = 5;
+      else event.alchprof.filter = 0;
+    }
     this.filters = { ...event };
     this.filterItems(this.filters);
+    console.log(this.filters);
   }
 }
