@@ -37,53 +37,35 @@ export class ListingFiltersComponent implements OnInit {
     lowVolume: 'Low Volume',
   };
 
-  ngOnInit(): void {
-    this.newFilters = {
-      dataType: this.filterValues.dataType,
-      alchprof: { max: 0, filter: 1 },
-      margin: { max: 0, filter: 5 },
-      buyLimit: { max: 0, filter: 1 },
-      highVolume: { max: 0, filter: 1 },
-      lowVolume: { max: 0, filter: 1 },
-      members: true,
-    };
-
-    this.resetFilters = {
-      dataType: this.filterValues.dataType,
-      alchprof: { max: 0, filter: 1 },
-      margin: { max: 0, filter: 5 },
-      buyLimit: { max: 0, filter: 1 },
-      highVolume: { max: 0, filter: 1 },
-      lowVolume: { max: 0, filter: 1 },
-      members: true,
-    };
-  }
+  ngOnInit(): void {}
 
   toggleView(event: MatButtonToggleChange) {
-    this.newFilters.dataType = event.value;
+    this.filterValues.dataType = event.value;
+    this.clearFilters();
   }
 
   toggleMembers(event: MatCheckboxChange) {
-    this.newFilters.members = !event.checked;
+    this.filterValues.members = !event.checked;
   }
 
   setFilter(event: any) {
+    console.log(this.newFilters);
     const filterVal = Number(event.target.value);
     switch (this.selectedFilter) {
       case this.filterNames.alchprof:
-        this.newFilters.alchprof.filter = filterVal;
+        this.filterValues.alchprof.filter = filterVal;
         break;
       case this.filterNames.margin:
-        this.newFilters.margin.filter = filterVal;
+        this.filterValues.margin.filter = filterVal;
         break;
       case this.filterNames.buyLimit:
-        this.newFilters.buyLimit.filter = filterVal;
+        this.filterValues.buyLimit.filter = filterVal;
         break;
       case this.filterNames.highVolume:
-        this.newFilters.highVolume.filter = filterVal;
+        this.filterValues.highVolume.filter = filterVal;
         break;
       case this.filterNames.lowVolume:
-        this.newFilters.lowVolume.filter = filterVal;
+        this.filterValues.lowVolume.filter = filterVal;
         break;
 
       default:
@@ -112,10 +94,17 @@ export class ListingFiltersComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.updateFilter.emit(this.resetFilters);
+    this.filterValues.alchprof.filter = 1;
+    this.filterValues.buyLimit.filter = 1;
+    this.filterValues.highVolume.filter = 1;
+    this.filterValues.lowVolume.filter = 1;
+    this.filterValues.margin.filter = 5;
+    this.updateFilter.emit(this.filterValues);
+    this.selectedFilter = null;
   }
 
   onFilter(): void {
-    this.updateFilter.emit(this.newFilters);
+    this.updateFilter.emit(this.filterValues);
+    this.selectedFilter = null;
   }
 }

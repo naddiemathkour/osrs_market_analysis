@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { IItemListings } from '../../interfaces/itemlistings.interface';
-import { map, Observable, of, Subscription, switchMap, tap, timer } from 'rxjs';
+import { map, Observable, Subscription, switchMap, tap, timer } from 'rxjs';
 import { FetchmarketdataService } from '../../services/fetchmarketdata.service';
 import { CommonModule } from '@angular/common';
 import { IFilters } from '../../interfaces/filters.interface';
@@ -109,7 +109,9 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
       if (item.members && !this.filters.members) return false;
       return true;
     });
-
+    if (this.filters.dataType === 'flip')
+      this.itemData.sort((a, b) => b.margin - a.margin);
+    else this.itemData.sort((a, b) => b.alchprof! - a.alchprof!);
     this.setMaxFilterValues();
   }
 
@@ -146,11 +148,13 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   }
 
   updateFilters(event: IFilters) {
+    console.log(event, this.filters, event.dataType === this.filters.dataType);
     if (event.dataType !== this.filters.dataType) {
-      if (event.dataType === 'alch') event.margin.filter = 5;
-      else event.alchprof.filter = 0;
+      this.filters.dataType = event.dataType;
+    } else {
+      this.filters = { ...event };
     }
-    this.filters = { ...event };
+
     this.filterItems(this.filters);
   }
 }
