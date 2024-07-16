@@ -148,7 +148,6 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   }
 
   updateFilters(event: IFilters) {
-    console.log(event, this.filters, event.dataType === this.filters.dataType);
     if (event.dataType !== this.filters.dataType) {
       this.filters.dataType = event.dataType;
     } else {

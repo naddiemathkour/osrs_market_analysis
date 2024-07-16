@@ -44,14 +44,14 @@
       }
     </div>
 
-    <mat-checkbox class="col col-lg-3" (change)="toggleMembers($event)"
-      ><span>Hide Members-only items?</span></mat-checkbox
+    <mat-checkbox class="col col-lg-2" (change)="toggleMembers($event)"
+      ><span>Hide Member-only items</span></mat-checkbox
     >
-    <div class="row justify-content-center">
-      <button class="btn btn-success col col-lg-2 m-1" (click)="onFilter()">
+    <div class="col-12 col-md-12 col-lg-2 d-flex justify-content-center">
+      <button class="btn btn-success col m-1" (click)="onFilter()">
         Filter
       </button>
-      <button class="btn btn-danger col col-lg-2 m-1" (click)="clearFilters()">
+      <button class="btn btn-danger col m-1" (click)="clearFilters()">
         Clear Filters
       </button>
     </div>

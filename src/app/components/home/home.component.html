@@ -1,29 +1,6 @@
 <div class="container-fluid g-0 p-0 m-0 page-container">
-  <h1>RS Item List</h1>
+  <app-header></app-header>
   <div class="container-fluid outline">
-    <!-- <div class="row justify-content-around m-2">
-      <button class="col-2" (click)="toggleFlippingView()">
-        Show flipping view
-      </button>
-      <button class="col-2" (click)="toggleAlchingView()">
-        Show alching view
-      </button>
-      <label class="col-3">
-        <input type="checkbox" [(ngModel)]="showMembers" />
-        <span>{{ " Show Members Items" }}</span>
-      </label>
-    </div> -->
     <app-item-cards></app-item-cards>
-    <!-- @if (flippingview) {
-    <app-flipping-view
-      [listingData$]="listingData$"
-      [showMembers]="showMembers"
-    ></app-flipping-view>
-    } @if (alchingview) {
-    <app-alching-view
-      [listingData$]="listingData$"
-      [showMembers]="showMembers"
-    ></app-alching-view> 
-    }-->
   </div>
 </div>
