@@ -1,0 +1,59 @@
+<div class="container g-0 mt-3 mb-2">
+  <div class="row justify-content-evenly align-items-center">
+    <mat-button-toggle-group
+      name="dataTypeView"
+      appearance="standard"
+      class="pill-toggle col-2 col-lg-3"
+      (change)="toggleView($event)"
+    >
+      <mat-button-toggle value="alch">Alching</mat-button-toggle>
+      <mat-button-toggle value="flip">Flipping</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <div class="col col-lg-3 d-flex justify-content-center align-items-center">
+      <mat-form-field appearance="outline" class="col mt-3 align-self-center">
+        <mat-label>Filter field</mat-label>
+        <mat-select [(value)]="selectedFilter">
+          @if(filterValues.dataType == 'flip') {
+          <mat-option [value]="filterNames.margin"
+            >Profit Margin (%)</mat-option
+          >
+          } @else {
+          <mat-option [value]="filterNames.alchprof">Alch Profit</mat-option>
+
+          }
+          <mat-option [value]="filterNames.buyLimit">Buy Limit</mat-option>
+          <mat-option [value]="filterNames.highVolume"
+            >Buying Volume</mat-option
+          >
+          <mat-option [value]="filterNames.lowVolume"
+            >Selling Volume</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      @if(selectedFilter) {
+      <mat-slider
+        min="1"
+        [max]="getMaxValue(selectedFilter)"
+        [step]="(getMaxValue(selectedFilter) / 100).toFixed(0)"
+        discrete
+        class="col col-lg-3"
+      >
+        <input matSliderThumb (change)="setFilter($event)" />
+      </mat-slider>
+      }
+    </div>
+
+    <mat-checkbox class="col col-lg-2" (change)="toggleMembers($event)"
+      ><span>Hide Member-only items</span></mat-checkbox
+    >
+    <div class="col-12 col-md-12 col-lg-2 d-flex justify-content-center">
+      <button class="btn btn-success col m-1" (click)="onFilter()">
+        Filter
+      </button>
+      <button class="btn btn-danger col m-1" (click)="clearFilters()">
+        Clear Filters
+      </button>
+    </div>
+  </div>
+</div>

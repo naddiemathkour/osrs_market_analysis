@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.item-row-container {
+  background-color: #c0a886;
+  div {
+    h4 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: bold;
+      font-size: 19px;
+      margin: 5px 0;
+    }
+  }
+}
+
+.item-icon {
+  padding: 5px;
+  max-height: 75px;
+  max-width: 75px;
+  border: 1px solid rgba(black, 0.9);
+  background-color: whitesmoke;
+}
+
+.item-container {
+  margin: 5px none !important;
+}
+
+.data-type-choice-icon {
+  height: 25vw;
+  width: auto;
+  margin: auto auto;
+}
+
+.choice-container {
+  height: calc(100vh - 300px);
+  button {
+    padding: 10vh;
+    &:hover {
+      background-color: rgba(#c0a886, 0.5);
+    }
+  }
+}

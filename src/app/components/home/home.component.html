@@ -1,19 +1,6 @@
-<h1>OSRS Market Prices</h1>
-<div class="row m-5">
-  <div class="col text-center">Item Id</div>
-  <div class="col text-center">High</div>
-  <div class="col text-center">High Time</div>
-  <div class="col text-center">Low</div>
-  <div class="col text-center">Low Time</div>
+<div class="container-fluid g-0 p-0 m-0 page-container">
+  <app-header></app-header>
+  <div class="container-fluid outline">
+    <app-item-cards></app-item-cards>
+  </div>
 </div>
-<hr />
-@for(data of latestData; track data.high) {
-<div class="row m-5">
-  <div class="col text-center">{{ data.id }}</div>
-  <div class="col text-center">{{ data.high }}</div>
-  <div class="col text-center">{{ data.highTime }}</div>
-  <div class="col text-center">{{ data.low }}</div>
-  <div class="col text-center">{{ data.lowTime }}</div>
-</div>
-<hr />
-}
