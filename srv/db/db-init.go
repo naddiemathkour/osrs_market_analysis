@@ -144,7 +144,10 @@ func PostgresInit() {
 
 	fmt.Println("Successfully created price table")
 
-	vQuery := `SELECT DISTINCT m.id,
+	vQuery := `CREATE VIEW Listings
+				(id, name, icon, examine, members, buylimit, highalch, lowalch, timestamp, avghighprice, highpricevolume, avglowprice, lowpricevolume, spread, margin)
+	as
+		SELECT DISTINCT m.id,
     m.name,
     m.icon,
     m.examine,
