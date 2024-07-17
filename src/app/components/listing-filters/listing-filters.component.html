@@ -5,6 +5,7 @@
       appearance="standard"
       class="pill-toggle col-2 col-lg-3"
       (change)="toggleView($event)"
+      [value]="this.filterValues.dataType"
     >
       <mat-button-toggle value="alch">Alching</mat-button-toggle>
       <mat-button-toggle value="flip">Flipping</mat-button-toggle>
@@ -32,15 +33,10 @@
         </mat-select>
       </mat-form-field>
       @if(selectedFilter) {
-      <mat-slider
-        min="1"
-        [max]="getMaxValue(selectedFilter)"
-        [step]="(getMaxValue(selectedFilter) / 100).toFixed(0)"
-        discrete
-        class="col col-lg-3"
-      >
-        <input matSliderThumb (change)="setFilter($event)" />
-      </mat-slider>
+      <mat-form-field class="col mt-3" appearance="outline">
+        <mat-label>Max: {{ getMaxValue(selectedFilter) }}</mat-label>
+        <input matInput placeholder="" (change)="setFilter($event)" />
+      </mat-form-field>
       }
     </div>
 

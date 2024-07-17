@@ -70,7 +70,7 @@ func MapPrices() {
 	}
 
 	// Set timestamp for ingestion
-	var timestamp = time.Now().Format("2006-01-02 15:04:05")
+	var timestamp = time.Now().UTC().Format("2006-01-02 15:04:05")
 
 	// Iterate through items and insert into database
 	count := 0
@@ -87,7 +87,7 @@ func MapPrices() {
 		}
 	}
 
-	deleteQuery := `DELETE FROM price WHERE timestamp < NOW() -'20 minutes'::interval;`
+	deleteQuery := `DELETE FROM price WHERE timestamp < NOW() -'15 minutes'::interval;`
 	_, err = db.Exec(deleteQuery)
 	if err != nil {
 		logging.Logger.Fatalf("Failed to delete stale data: %v", err)
@@ -95,5 +95,5 @@ func MapPrices() {
 
 	db.Close()
 
-	logging.Logger.Errorf("Successfully inserted %d items price data.", count)
+	logging.Logger.Infof("Successfully inserted %d items price data.", count)
 }

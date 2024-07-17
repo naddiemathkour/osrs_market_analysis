@@ -201,7 +201,7 @@ func PostgresInit() {
 	dbConfig.Path = "public"
 
 	db.Close()
-	fmt.Println("Successfully created view. All Database requirements fulfilled!")
+	fmt.Println("Successfully created view!")
 
 	//set values in .env file
 	file, err := os.Create(".env")
@@ -217,6 +217,9 @@ func PostgresInit() {
 	env.Write("password", dbConfig.Password, file.Name(), true)
 	env.Write("path", dbConfig.Path, file.Name(), true)
 
+	fmt.Println("All Database requirements executed successfully. Data fetching and storage is now running.")
+	MapItems()
+	MapPrices()
 }
 
 func checkErr(err error) {
