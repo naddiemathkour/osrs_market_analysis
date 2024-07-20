@@ -28,6 +28,7 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   itemData: IItemListings[] = [];
   rawItemData: IItemListings[] = [];
   testBool: boolean = true;
+  loading: boolean = false;
   filters: IFilters = {} as IFilters;
   nat: IItemListings | undefined = {} as IItemListings;
 
@@ -148,12 +149,19 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   }
 
   updateFilters(event: IFilters) {
+    this.loading = true;
+
     if (event.dataType !== this.filters.dataType) {
       this.filters.dataType = event.dataType;
     } else {
       this.filters = { ...event };
     }
 
-    this.filterItems(this.filters);
+    const applyFilters = () => {
+      this.filterItems(this.filters);
+    };
+
+    requestAnimationFrame(applyFilters);
+    setTimeout(() => (this.loading = false), 0);
   }
 }

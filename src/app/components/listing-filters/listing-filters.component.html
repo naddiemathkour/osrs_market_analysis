@@ -53,3 +53,13 @@
     </div>
   </div>
 </div>
+
+@if (loading) {
+<div class="row m-auto p-5 w-50 justify-content-center">
+  <span class="text-xl-center m-1">Loading data...</span>
+  <mat-progress-bar
+    mode="indeterminate"
+    class="col align-self-center border border-dark-subtle"
+  ></mat-progress-bar>
+</div>
+}

@@ -10,6 +10,8 @@ import {
 } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { IFilters } from '../../interfaces/filters.interface';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 @Component({
   selector: 'app-listing-filters',
   standalone: true,
@@ -18,12 +20,14 @@ import { IFilters } from '../../interfaces/filters.interface';
     MatSelectModule,
     MatCheckboxModule,
     MatInputModule,
+    MatProgressBarModule,
   ],
   templateUrl: './listing-filters.component.html',
   styleUrl: './listing-filters.component.scss',
 })
 export class ListingFiltersComponent {
   @Input() filterValues!: IFilters;
+  @Input() loading!: boolean;
   @Output() updateFilter: EventEmitter<IFilters> = new EventEmitter<IFilters>();
   newFilters!: IFilters;
   resetFilters!: IFilters;
