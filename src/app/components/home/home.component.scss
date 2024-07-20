@@ -1,7 +1,7 @@
 .outline {
   border: 1px solid black;
   background-color: white;
-  min-height: 100vh;
+  min-height: calc(100vh - 130px);
   width: 80vw;
   overflow-y: auto;
 }

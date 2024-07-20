@@ -3,27 +3,31 @@ import {
   MatButtonToggleChange,
   MatButtonToggleModule,
 } from '@angular/material/button-toggle';
-import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
 import {
   MatCheckboxChange,
   MatCheckboxModule,
 } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
 import { IFilters } from '../../interfaces/filters.interface';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 @Component({
   selector: 'app-listing-filters',
   standalone: true,
   imports: [
     MatButtonToggleModule,
-    MatSliderModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatInputModule,
+    MatProgressBarModule,
   ],
   templateUrl: './listing-filters.component.html',
   styleUrl: './listing-filters.component.scss',
 })
-export class ListingFiltersComponent implements OnInit {
+export class ListingFiltersComponent {
   @Input() filterValues!: IFilters;
+  @Input() loading!: boolean;
   @Output() updateFilter: EventEmitter<IFilters> = new EventEmitter<IFilters>();
   newFilters!: IFilters;
   resetFilters!: IFilters;
@@ -36,8 +40,6 @@ export class ListingFiltersComponent implements OnInit {
     highVolume: 'High Volume',
     lowVolume: 'Low Volume',
   };
-
-  ngOnInit(): void {}
 
   toggleView(event: MatButtonToggleChange) {
     this.filterValues.dataType = event.value;

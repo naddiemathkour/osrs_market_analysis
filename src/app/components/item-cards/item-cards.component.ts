@@ -28,6 +28,7 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   itemData: IItemListings[] = [];
   rawItemData: IItemListings[] = [];
   testBool: boolean = true;
+  loading: boolean = false;
   filters: IFilters = {} as IFilters;
   nat: IItemListings | undefined = {} as IItemListings;
 
@@ -53,7 +54,7 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
 
   fetchData(): void {
     // Poll http service call to refresh data every minute
-    // I don't know why, but this needs to timeout for 0 milliseconds to work
+    // Due to the implementation, this timeout is necessary. Better implementation: Subscribe in a service.
     setTimeout(
       () =>
         (this.marketData$ = timer(0, 1 * 60 * 1000).pipe(
@@ -90,28 +91,28 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   filterItems(filters: IFilters): void {
     // Filter through itemData based on filter options
     this.itemData = this.rawItemData.filter((item) => {
-      if (
-        filters.dataType === 'flip' &&
-        item.margin < (filters.margin?.filter || 1)
-      ) {
+      if (filters.dataType === 'flip' && item.margin < filters.margin.filter) {
         return false;
       } else if (
         this.filters.dataType === 'alch' &&
-        item.alchprof! < (filters.alchprof.filter || 1)
+        item.alchprof! < filters.alchprof.filter
       ) {
         return false;
       }
-      if (item.buylimit < (this.filters.buyLimit.filter || 1)) return false;
-      if (item.highpricevolume < (this.filters.highVolume.filter || 1))
-        return false;
-      if (item.lowpricevolume < (this.filters.lowVolume.filter || 1))
-        return false;
+      if (item.buylimit < this.filters.buyLimit.filter) return false;
+      if (item.highpricevolume < this.filters.highVolume.filter) return false;
+      if (item.lowpricevolume < this.filters.lowVolume.filter) return false;
       if (item.members && !this.filters.members) return false;
       return true;
     });
-    if (this.filters.dataType === 'flip')
+
+    // Sort data based on view
+    if (this.filters.dataType === 'flip') {
       this.itemData.sort((a, b) => b.margin - a.margin);
-    else this.itemData.sort((a, b) => b.alchprof! - a.alchprof!);
+    } else if (this.filters.dataType === 'alch') {
+      this.itemData.sort((a, b) => b.alchprof! - a.alchprof!);
+    }
+
     this.setMaxFilterValues();
   }
 
@@ -148,12 +149,19 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
   }
 
   updateFilters(event: IFilters) {
+    this.loading = true;
+
     if (event.dataType !== this.filters.dataType) {
       this.filters.dataType = event.dataType;
     } else {
       this.filters = { ...event };
     }
 
-    this.filterItems(this.filters);
+    const applyFilters = () => {
+      this.filterItems(this.filters);
+    };
+
+    requestAnimationFrame(applyFilters);
+    setTimeout(() => (this.loading = false), 0);
   }
 }

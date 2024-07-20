@@ -1,5 +1,5 @@
 @if (!filters.dataType) {
-<div class="container-fluid">
+<div class="container-fluid mt-5">
   <h1 class="text-center">Choose a view:</h1>
 </div>
 
@@ -8,25 +8,26 @@
 >
   <button
     class="col h-auto p-1 m-2 btn btn-outline-light border border-dark-subtle"
-    (click)="filters.dataType = 'flip'; this.subscribeToData()"
-  >
-    <h2>Flipping View</h2>
-    <img src="../../../assets/coins.webp" class="data-type-choice-icon" />
-  </button>
-  <button
-    class="col h-auto p-1 m-2 btn btn-outline-light border border-dark-subtle"
     (click)="filters.dataType = 'alch'; this.subscribeToData()"
   >
     <h2>Alching View</h2>
     <img src="../../../assets/High-Alch.png" class="data-type-choice-icon" />
   </button>
+  <button
+    class="col h-auto p-1 m-2 btn btn-outline-light border border-dark-subtle"
+    (click)="filters.dataType = 'flip'; this.subscribeToData()"
+  >
+    <h2>Flipping View</h2>
+    <img src="../../../assets/coins.webp" class="data-type-choice-icon" />
+  </button>
 </div>
 } @else {
 <app-listing-filters
   [filterValues]="filters"
+  [loading]="loading"
   (updateFilter)="updateFilters($event)"
 ></app-listing-filters>
-} @for (item of itemData; track item.id) {
+} @if (!loading) { @for (item of itemData; track item.id) {
 <mat-card
   appearance="raised"
   class="container g-0 item-container mb-3 border border-1 border-black"
@@ -47,7 +48,7 @@
           >
             <img
               mat-card-sm-image
-              src="../../../assets/sgs.webp"
+              src="https://oldschool.runescape.wiki/images/{{ item.icon }}"
               class="col item-icon image-fluid"
             />
             <div class="col text-center">
@@ -115,4 +116,4 @@
     </cdk-accordion-item>
   </cdk-accordion>
 </mat-card>
-}
+} }
