@@ -75,28 +75,20 @@ export class ListingFiltersComponent {
   }
 
   getMaxValue(selectedFilter: string): number {
-    let ret = 0;
     switch (selectedFilter) {
       case this.filterNames.alchprof:
-        ret = this.filterValues.alchprof.max;
-        break;
+        return this.filterValues.alchprof.max;
       case this.filterNames.margin:
-        ret = this.filterValues.margin.max;
-        break;
+        return this.filterValues.margin.max;
       case this.filterNames.buyLimit:
-        ret = this.filterValues.buyLimit.max;
-        break;
+        return this.filterValues.buyLimit.max;
       case this.filterNames.highVolume:
-        ret = this.filterValues.highVolume.max;
-        break;
+        return this.filterValues.highVolume.max;
       case this.filterNames.lowVolume:
-        ret = this.filterValues.lowVolume.max;
-        break;
+        return this.filterValues.lowVolume.max;
       default:
-        ret = 100;
-        break;
+        return 100;
     }
-    return Math.min(ret, 9999);
   }
 
   clearFilters(): void {

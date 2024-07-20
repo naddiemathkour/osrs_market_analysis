@@ -25,6 +25,6 @@ func StartServer() *http.Server {
 		}
 	}()
 
-	logging.Logger.Info("HTTP server started on :8080")
+	logging.Logger.Info("Http server started on :8080")
 	return srv
 }

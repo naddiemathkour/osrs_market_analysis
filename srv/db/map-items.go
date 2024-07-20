@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 
 	_ "github.com/lib/pq"
 	"github.com/naddiemathkour/osrs_market_analysis/logging"
@@ -74,6 +75,9 @@ func MapItems() {
 			Examine:  item["examine"],
 		}
 
+		// Replace icon url with encoded url for dynamic image fetching
+		tempObj.Icon = encodeURL(tempObj.Icon.(string))
+
 		// Create and Execute INSERT statement
 		insertQuery := `INSERT INTO public.mapping (id, members, lowalch, highalch, buylimit, value, icon, name, examine)
                     	VALUES (:id, :members, :lowalch, :highalch, :buylimit, :value, :icon, :name, :examine)
@@ -97,4 +101,9 @@ func MapItems() {
 	db.Close()
 
 	logging.Logger.Info("Successfully added item updates.")
+}
+
+func encodeURL(imageURL string) string {
+	encoded := strings.ReplaceAll(imageURL, " ", "_")
+	return encoded
 }
