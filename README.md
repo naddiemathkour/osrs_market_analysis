@@ -29,11 +29,27 @@ Migrating to AWS:
 4. Install docker: https://docs.docker.com/engine/install/ubuntu/
 
 5. Pull docker images:
-   $ docker pull pipthedev/angular-app:latest
    $ docker pull pipthedev/go-server:latest
    $ docker pull pipthedev/postgres:latest
 
 6. Run all docker images:
    $ sudo docker run --name osrs_db -p 5432:5432 -e POSTGRES_PASSWORD=1234 --network osrsflip -d pipthedev/postgres
-   $ sudo docker run -d --name go-server -p 8080:8080 --network osrsflip pipthedev/go-server
-   $ sudo docker run -d --name angular-app -p 80:4200 --network osrsflip angular-app:latest
+   $ sudo docker run -d --name go-server -p 80:8080 --network osrsflip pipthedev/go-server
+
+7. Host Angular app in S3 Bucket
+   1. Build app in production mode:
+      ng build --configuration=production
+   2. Create S3 Bucket
+   3. Unblock public access to bucket
+   4. Enable static site hosting
+   5. Set permissions JSON object:
+      { "Version": "2012-10-17",
+      "Statement": [
+      {"Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME/*"}
+      ]
+      }
+   6. Upload all files from dist folder (Note: Upload loose files. Only folder should be assets)
