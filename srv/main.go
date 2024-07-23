@@ -14,7 +14,8 @@ import (
 
 func main() {
 	// Attempt to connect to database
-	db.Connect("GET")
+	d := db.Connect("GET")
+	d.Close()
 
 	// Initialize http server to handle requests from client
 	srv := serv.StartServer()
