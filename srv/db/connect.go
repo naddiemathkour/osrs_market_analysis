@@ -10,10 +10,10 @@ import (
 )
 
 func Connect(method string) *sqlx.DB {
-	//load env file from directory
-	if err := env.Load("./.env"); err != nil {
-		logging.Logger.Info("Failed to load environment file. Initiating DB setup...")
-		PostgresInit()
+	// Load env file values
+	err := env.Load(".env")
+	if err != nil {
+		logging.Logger.Fatalf("Error loading env file: %v", err)
 	}
 
 	dbConfig := models.EnvVars{
@@ -31,7 +31,14 @@ func Connect(method string) *sqlx.DB {
 		dbConfig.User, dbConfig.Dbname, "disable", dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Path,
 	))
 	if err != nil {
-		logging.Logger.Fatalf("Failed to connect to Postgres: %v", err)
+		logging.Logger.Printf("Failed to connect with: %s", fmt.Sprintf(
+			"user=%s dbname=%s sslmode=%s password=%s host=%s port=%s search_path=%s",
+			dbConfig.User, dbConfig.Dbname, "disable", dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Path,
+		))
+		logging.Logger.Errorf("Failed to connect to Postgres: %v", err)
+		logging.Logger.Info("Attempting to initialize Database...")
+		PostgresInit()
+		return nil
 	}
 
 	// Verify the connection

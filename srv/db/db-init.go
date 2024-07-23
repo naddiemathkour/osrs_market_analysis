@@ -1,11 +1,9 @@
 package db
 
 import (
-	"bufio"
 	"database/sql"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/gofor-little/env"
 	"github.com/naddiemathkour/osrs_market_analysis/logging"
@@ -13,94 +11,60 @@ import (
 )
 
 func PostgresInit() {
-	fmt.Println("Initiate Postgres Database...")
+	logging.Logger.Infof("Initiate Postgres Database...")
 	// Create struct to ingest .env var data
 	dbConfig := models.EnvVars{}
 
-	// Create console reader:
-	reader := bufio.NewReader(os.Stdin)
+	file, err := os.Open(".env")
+	if err != nil {
+		logging.Logger.Errorf("Error opening env: %v", err)
+	}
+
+	env.Load(file.Name())
 
 	// Set values for env file
-	dbConfig.Host = "localhost"
-
-	var err error
-
-	fmt.Println("Enter Database user:")
-	dbConfig.User, err = reader.ReadString('\n')
-	checkErr(err)
-	dbConfig.User = strings.TrimSpace(dbConfig.User)
-
-	fmt.Println("Enter Database user password:")
-	dbConfig.Password, err = reader.ReadString('\n')
-	checkErr(err)
-	dbConfig.Password = strings.TrimSpace(dbConfig.Password)
-
-	fmt.Println("Enter port number (default: 5432 or 5433):")
-	dbConfig.Port, err = reader.ReadString('\n')
-	checkErr(err)
-	dbConfig.Port = strings.TrimSpace(dbConfig.Port)
+	dbConfig.Dbname = env.Get("dbname", "")
+	dbConfig.Host = env.Get("host", "")
+	dbConfig.Path = env.Get("path", "")
+	dbConfig.Port = env.Get("port", "")
+	dbConfig.User = env.Get("user", "")
+	dbConfig.Password = env.Get("password", "")
 
 	// Open connection to database
-	fmt.Println("Attempting to connect to db...")
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/postgres?sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port)
+	logging.Logger.Infof("Attempting to connect to db...")
+	logging.Logger.Infof("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.User)
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.User)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		fmt.Printf("Error connecting to Postgres: %v\n", err)
+		logging.Logger.Errorf("Error connecting to Postgres: %v\n", err)
 		dbClose(db)
 	}
 
-	// Check if connection was successful
-	err = db.Ping()
+	dbQuery := fmt.Sprintf("CREATE DATABASE %s;", dbConfig.Dbname)
+	_, err = db.Exec(dbQuery)
 	if err != nil {
-		fmt.Printf("Error pinging Postgres: %v\n", err)
-	} else {
-		fmt.Println("Connection successful!")
+		logging.Logger.Errorf("Unable to create new database %s: %v", dbConfig.Dbname, err)
 	}
 
-	// Create new database in Postgres
-	fmt.Println("Enter a name for your database:")
-	dbConfig.Dbname, err = reader.ReadString('\n')
-	checkErr(err)
-	dbConfig.Dbname = strings.TrimSpace(dbConfig.Dbname)
-
-	fmt.Printf("Attempting to create database: %s\n", dbConfig.Dbname)
-
-	createDBQuery := fmt.Sprintf("CREATE DATABASE %s", dbConfig.Dbname)
-	_, err = db.Exec(createDBQuery)
-	if err != nil {
-		fmt.Printf("Failed to create database: %v\n", err)
-		dbClose(db)
-	}
-	fmt.Printf("Database %s created successfully!\n", dbConfig.Dbname)
-
-	// Open connection to database
-	fmt.Println("Attempting to connect to new database...")
-	connStr = fmt.Sprintf("postgres://%s:%s@localhost:%s/%s?sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Port, dbConfig.Dbname)
+	// Connect to new database
+	logging.Logger.Infof("Attempting to connect to db...")
+	logging.Logger.Infof("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Dbname)
+	connStr = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Dbname)
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {
-		fmt.Printf("Error connecting to Postgres: %v\n", err)
+		logging.Logger.Errorf("Error connecting to Postgres: %v\n", err)
 		dbClose(db)
 	}
 
 	// Check if connection was successful
 	err = db.Ping()
 	if err != nil {
-		fmt.Printf("Error pinging Postgres: %v\n", err)
+		logging.Logger.Infof("Error pinging Postgres: %v\n", err)
 	} else {
-		fmt.Println("Connection successful!")
+		logging.Logger.Infof("Connection successful!")
 	}
 
-	fmt.Println("Creating database schema...")
-
-	// Create schema in Postgres
-	// schemaQuery := fmt.Sprintf("CREATE SCHEMA market_data")
-	// _, err = db.Exec(schemaQuery)
-	// if err != nil {
-	// 	fmt.Printf("Failed to create schema: %v\n", err)
-	// 	dbClose(db)
-	// }
-
-	// fmt.Println("Schema created successfully!")
+	logging.Logger.Infof("Creating database schema...")
 
 	// Create tables and views in Postgres
 	tQuery := `CREATE TABLE mapping
@@ -119,11 +83,11 @@ func PostgresInit() {
 
 	_, err = db.Exec(tQuery)
 	if err != nil {
-		fmt.Printf("Failed to create table: %v\n", err)
+		logging.Logger.Errorf("Failed to create table: %v\n", err)
 		dbClose(db)
 	}
 
-	fmt.Println("Successfully created mapping table")
+	logging.Logger.Infof("Successfully created mapping table")
 
 	tQuery = `CREATE TABLE price
 					(
@@ -138,11 +102,11 @@ func PostgresInit() {
 
 	_, err = db.Exec(tQuery)
 	if err != nil {
-		fmt.Printf("Failed to create table: %v\n", err)
+		logging.Logger.Errorf("Failed to create table: %v\n", err)
 		dbClose(db)
 	}
 
-	fmt.Println("Successfully created price table")
+	logging.Logger.Infof("Successfully created price table")
 
 	vQuery := `CREATE VIEW Listings
 				(id, name, icon, examine, members, buylimit, highalch, lowalch, timestamp, avghighprice, highpricevolume, avglowprice, lowpricevolume, spread, margin)
@@ -193,38 +157,23 @@ func PostgresInit() {
 
 	_, err = db.Exec(vQuery)
 	if err != nil {
-		fmt.Printf("Failed to create view: %v\n", err)
+		logging.Logger.Errorf("Failed to create view: %v\n", err)
 		dbClose(db)
 	}
 
 	// Get search_path for env
 	dbConfig.Path = "public"
+	logging.Logger.Infof("Successfully created view!")
+	logging.Logger.Infof("All Database requirements executed successfully. Data fetching and storage is now running.")
 
 	db.Close()
-	fmt.Println("Successfully created view!")
-
-	//set values in .env file
-	file, err := os.Create(".env")
-	if err != nil {
-		logging.Logger.Fatalf("Unable to create .env file: %v", err)
-	}
-
-	env.Load(file.Name())
-	env.Write("host", dbConfig.Host, file.Name(), true)
-	env.Write("port", dbConfig.Port, file.Name(), true)
-	env.Write("dbname", dbConfig.Dbname, file.Name(), true)
-	env.Write("user", dbConfig.User, file.Name(), true)
-	env.Write("password", dbConfig.Password, file.Name(), true)
-	env.Write("path", dbConfig.Path, file.Name(), true)
-
-	fmt.Println("All Database requirements executed successfully. Data fetching and storage is now running.")
 	MapItems()
 	MapPrices()
 }
 
 func checkErr(err error) {
 	if err != nil {
-		fmt.Printf("Error reading user input: %v\n", err)
+		logging.Logger.Infof("Error reading user input: %v\n", err)
 		os.Exit(1)
 	}
 }

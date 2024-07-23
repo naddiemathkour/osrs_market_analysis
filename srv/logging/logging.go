@@ -1,7 +1,8 @@
 package logging
 
 import (
-	_ "os"
+	"io"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -21,4 +22,6 @@ func init() {
 
 	// Set log format to JSON for structured logging
 	Logger.SetFormatter(&logrus.JSONFormatter{})
+
+	Logger.SetOutput(io.MultiWriter(os.Stdout, Logger.Out))
 }
