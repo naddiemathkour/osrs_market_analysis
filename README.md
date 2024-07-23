@@ -34,6 +34,6 @@ Migrating to AWS:
    $ docker pull pipthedev/postgres:latest
 
 6. Run all docker images:
-   $ sudo docker run --name osrs_db -p 5432:5432 -e POSTGRES_PASSWORD=1234 --network osrsflip -d pipthedev/postgres
-   $ sudo docker run -d --name go-server -p 8080:8080 --network osrsflip pipthedev/go-server
+   $ sudo docker run --name osrs_db -p 5432:5432 -e POSTGRES_PASSWORD=1234 --network osrsflip -d pipthedev/postgres:latest
+   $ sudo docker run -d --name go-server -p 80:8080 --network osrsflip pipthedev/go-server:latest
    $ sudo docker run -d --name angular-app -p 80:4200 --network osrsflip angular-app:latest
