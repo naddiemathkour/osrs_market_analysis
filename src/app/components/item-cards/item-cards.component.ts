@@ -38,7 +38,7 @@ export class ItemCardsComponent implements OnInit, OnDestroy {
     this.filters = {
       dataType: '',
       alchprof: { max: 0, filter: 1 },
-      margin: { max: 0, filter: 5 },
+      margin: { max: 0, filter: 25 },
       buyLimit: { max: 0, filter: 1 },
       highVolume: { max: 0, filter: 1 },
       lowVolume: { max: 0, filter: 1 },

@@ -7,14 +7,13 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/naddiemathkour/osrs_market_analysis/db"
 	"github.com/naddiemathkour/osrs_market_analysis/logging"
 	serv "github.com/naddiemathkour/osrs_market_analysis/server"
 )
 
 func main() {
 	// Attempt to connect to database
-	db.Connect("GET")
+	// db.Connect("GET")
 
 	// Initialize http server to handle requests from client
 	srv := serv.StartServer()
