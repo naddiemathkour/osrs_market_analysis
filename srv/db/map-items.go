@@ -14,7 +14,6 @@ import (
 func MapItems() {
 	// Get db connection
 	db := Connect("POST")
-	defer db.Close()
 
 	//handle http request
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/mapping", nil)
@@ -50,7 +49,9 @@ func MapItems() {
 	var count int
 	err = db.QueryRow(countQuery).Scan(&count)
 	if err != nil {
-		logging.Logger.Fatalf("Error querying row count: %v", err)
+		logging.Logger.Errorf("Error querying row count: %v", err)
+		logging.Logger.Info("Attempting to initialize Database")
+		PostgresInit()
 	}
 
 	if len(jsonResp) == count {
