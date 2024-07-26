@@ -27,6 +27,7 @@ body {
   border: 1px solid rgba(black, 0.8);
   background-color: #eee9e1;
   aspect-ratio: 1;
+  image-rendering: pixelated;
 }
 
 .item-container {
