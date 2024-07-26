@@ -14,11 +14,16 @@ import (
 func MapItems() {
 	// Get db connection
 	db := Connect("POST")
+	if db == nil {
+		return
+	}
 
 	//handle http request
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/mapping", nil)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to create http request: %v", err)
+		logging.Logger.Errorf("Failed to create http request: %v", err)
+		db.Close()
+		return
 	}
 
 	req.Header.Set("User-Agent", "Runescape Market Data Analysis")
@@ -27,13 +32,17 @@ func MapItems() {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to accept request: %v", err)
+		logging.Logger.Errorf("Failed to accept request: %v", err)
+		db.Close()
+		return
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to read response body: %v", err)
+		logging.Logger.Errorf("Failed to read response body: %v", err)
+		db.Close()
+		return
 	}
 
 	//Decode response data to JSON
@@ -41,7 +50,9 @@ func MapItems() {
 
 	err = json.Unmarshal(body, &jsonResp)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to unmarshal JSON data: %v", err)
+		logging.Logger.Errorf("Failed to unmarshal JSON data: %v", err)
+		db.Close()
+		return
 	}
 
 	// Query database for item count. If item count is still the same, return. Else, update all item data.
@@ -55,6 +66,7 @@ func MapItems() {
 	}
 
 	if len(jsonResp) == count {
+		db.Close()
 		return
 	}
 
@@ -95,7 +107,9 @@ func MapItems() {
 
 		_, err := db.NamedExec(insertQuery, &tempObj)
 		if err != nil {
-			logging.Logger.Fatalf("Failed to execute insert query: %v", err)
+			logging.Logger.Errorf("Failed to execute insert query: %v", err)
+			db.Close()
+			return
 		}
 	}
 

@@ -14,15 +14,18 @@ import (
 func MapPrices() {
 	// Get db connection
 	db := Connect("POST")
-	defer db.Close()
-
+	if db == nil {
+		return
+	}
 	// Log operation
 	logging.Logger.Info("Ingesting item price data...")
 
 	//handle http request
 	req, err := http.NewRequest("GET", "https://prices.runescape.wiki/api/v1/osrs/5m", nil)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to create http request: %v", err)
+		logging.Logger.Errorf("Failed to create http request: %v", err)
+		db.Close()
+		return
 	}
 
 	req.Header.Set("User-Agent", "Runescape Market Data Analysis")
@@ -31,13 +34,17 @@ func MapPrices() {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to accept request: %v", err)
+		logging.Logger.Errorf("Failed to accept request: %v", err)
+		db.Close()
+		return
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to read response body: %v", err)
+		logging.Logger.Errorf("Failed to read response body: %v", err)
+		db.Close()
+		return
 	}
 
 	//Decode response data to JSON
@@ -45,19 +52,25 @@ func MapPrices() {
 
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to unmarshal JSON data: %v", err)
+		logging.Logger.Errorf("Failed to unmarshal JSON data: %v", err)
+		db.Close()
+		return
 	}
 
 	jsonResp, err := json.Marshal(data["data"])
 	if err != nil {
-		logging.Logger.Fatalf("Failed to marshal data: %v", err)
+		logging.Logger.Errorf("Failed to marshal data: %v", err)
+		db.Close()
+		return
 	}
 
 	// Unmarshal data into item map struct map[string]models.ItemData
 	var itemsMap map[string]models.ItemData
 	err = json.Unmarshal(jsonResp, &itemsMap)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to unmarshal data: %v", err)
+		logging.Logger.Errorf("Failed to unmarshal data: %v", err)
+		db.Close()
+		return
 	}
 
 	// Convert map into slice of Items
@@ -81,7 +94,9 @@ func MapPrices() {
 
 		_, err := db.Exec(insertQuery, item.ID, timestamp, item.Data.AvgHighPrice, item.Data.HighPriceVolume, item.Data.AvgLowPrice, item.Data.LowPriceVolume)
 		if err != nil {
-			logging.Logger.Fatalf("Failed to execute insert query: %v", err)
+			logging.Logger.Errorf("Failed to execute insert query: %v", err)
+			db.Close()
+			return
 		} else {
 			count++
 		}
@@ -90,7 +105,9 @@ func MapPrices() {
 	deleteQuery := `DELETE FROM price WHERE timestamp < NOW() -'15 minutes'::interval;`
 	_, err = db.Exec(deleteQuery)
 	if err != nil {
-		logging.Logger.Fatalf("Failed to delete stale data: %v", err)
+		logging.Logger.Errorf("Failed to delete stale data: %v", err)
+		db.Close()
+		return
 	}
 
 	db.Close()

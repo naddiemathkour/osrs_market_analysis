@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/gofor-little/env"
 	"github.com/jmoiron/sqlx"
@@ -36,8 +37,13 @@ func Connect(method string) *sqlx.DB {
 			dbConfig.User, dbConfig.Dbname, "disable", dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Path,
 		))
 		logging.Logger.Errorf("Failed to connect to Postgres: %v", err)
+		if strings.Contains(err.Error(), "dial tcp: lookup osrs_db") {
+			db.Close()
+			return nil
+		}
 		logging.Logger.Info("Attempting to initialize Database...")
 		PostgresInit()
+		db.Close()
 		return nil
 	}
 
